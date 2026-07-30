@@ -5,6 +5,9 @@ import {
   BookOpen,
   Bot,
   Braces,
+  Briefcase,
+  ChevronLeft,
+  ChevronRight,
   Cloud,
   Code2,
   Cpu,
@@ -15,8 +18,11 @@ import {
   Home,
   Layers3,
   Mail,
+  Maximize2,
   Menu,
   Moon,
+  Pause,
+  Play,
   Server,
   Sun,
   User,
@@ -52,9 +58,11 @@ const socials = [
 const navItems = [
   { label: 'Home', href: '#home', icon: Home },
   { label: 'About', href: '#about', icon: User },
+  { label: 'Education', href: '#education', icon: BookOpen },
   { label: 'Skills', href: '#skills', icon: Braces },
-  { label: 'Certificates', href: '#certificates', icon: Award },
+  { label: 'Experience', href: '#experience', icon: Briefcase },
   { label: 'Projects', href: '#projects', icon: Folder },
+  { label: 'Certificates', href: '#certificates', icon: Award },
   { label: 'Contact', href: '#contact', icon: Mail },
 ]
 
@@ -158,6 +166,24 @@ const developmentProjects = [
     description: 'Luxury restaurant ordering with real-time operations and menu-grounded AI planning.',
     className: 'flavordash',
     mark: 'FD',
+    images: [
+      {
+        url: '/content/flavordash/flavordash-1.png',
+        caption: 'Luxury Gastronomy Storefront & Hero Landing',
+      },
+      {
+        url: '/content/flavordash/flavordash-2.png',
+        caption: 'Curated Masterpieces Culinary Menu & AI Planner',
+      },
+      {
+        url: '/content/flavordash/flavordash-3.png',
+        caption: 'Culinary Bag & White-Glove Checkout Invoice',
+      },
+      {
+        url: '/content/flavordash/flavordash-4.png',
+        caption: 'User Sign In & Culinary Profile Access',
+      },
+    ],
   },
   {
     name: 'FedDermGNN',
@@ -172,6 +198,24 @@ const developmentProjects = [
     description: 'An AWS-deployed handmade-yarn storefront with OAuth and category browsing.',
     className: 'craftywrap',
     mark: 'CW',
+    images: [
+      {
+        url: '/content/craftywrap/craftywrap-4.png',
+        caption: 'Storefront Homepage — Handcrafted Yarn Dolls',
+      },
+      {
+        url: '/content/craftywrap/craftywrap-1.png',
+        caption: 'Handcrafted Collections Catalog & Product Filters',
+      },
+      {
+        url: '/content/craftywrap/craftywrap-3.png',
+        caption: 'User Login & Account Authentication Modal',
+      },
+      {
+        url: '/content/craftywrap/craftywrap-2.png',
+        caption: 'Customer Registration & Account Creation Modal',
+      },
+    ],
   },
 ]
 
@@ -252,29 +296,291 @@ function SocialLinks({ className = '' }) {
   )
 }
 
-function ProjectCard({ project, index = 0 }) {
+function ProjectImageSlideshow({ images, projectMark, className, onOpenLightbox }) {
+  const [[currentIndex, direction], setPage] = useState([0, 1])
+
+  useEffect(() => {
+    if (!images || images.length === 0) return
+
+    const timer = setInterval(() => {
+      setPage(([prevIdx]) => [(prevIdx + 1) % images.length, 1])
+    }, 3000)
+
+    return () => clearInterval(timer)
+  }, [images])
+
+  if (!images || images.length === 0) {
+    return (
+      <div className={`project-visual ${className}`}>
+        <span className="project-grid" />
+        <span className="project-mark">{projectMark}</span>
+        <span className="project-orbit" />
+      </div>
+    )
+  }
+
+  const currentImg = images[currentIndex]
+
+  const handleDotClick = (e, index) => {
+    e.stopPropagation()
+    e.preventDefault()
+    const dir = index > currentIndex ? 1 : -1
+    setPage([index, dir])
+  }
+
+  const handleZoom = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    if (onOpenLightbox) {
+      onOpenLightbox(currentIndex)
+    }
+  }
+
+  const slideVariants = {
+    enter: (dir) => ({
+      x: dir > 0 ? '100%' : '-100%',
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir) => ({
+      x: dir < 0 ? '100%' : '-100%',
+      opacity: 0,
+    }),
+  }
+
   return (
-    <motion.a
+    <div
+      className="project-visual-slideshow"
+      onClick={handleZoom}
+      title="Click to expand full screen"
+    >
+      <div className="slideshow-stage">
+        <AnimatePresence custom={direction} mode="popLayout" initial={false}>
+          <motion.img
+            key={currentIndex}
+            src={currentImg.url}
+            alt={currentImg.caption || 'Project screenshot'}
+            className="project-slideshow-img"
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          />
+        </AnimatePresence>
+      </div>
+
+      <div className="slideshow-overlay-gradient" />
+
+      <div className="slideshow-dots-bar">
+        {images.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            className={`slideshow-dot ${idx === currentIndex ? 'active' : ''}`}
+            onClick={(e) => handleDotClick(e, idx)}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
+      </div>
+
+      <button
+        type="button"
+        className="slideshow-zoom-btn"
+        onClick={handleZoom}
+        aria-label="Enlarge screenshot"
+        title="View full screen"
+      >
+        <Maximize2 size={12} />
+      </button>
+    </div>
+  )
+}
+
+function ProjectLightboxModal({ project, initialIndex = 0, onClose }) {
+  const [[currentIndex, direction], setPage] = useState([initialIndex, 0])
+  const images = project?.images || []
+
+  useEffect(() => {
+    setPage([initialIndex, 0])
+  }, [initialIndex])
+
+  const paginate = (newDirection) => {
+    let nextIndex
+    if (newDirection > 0) {
+      nextIndex = (currentIndex + 1) % images.length
+    } else {
+      nextIndex = (currentIndex - 1 + images.length) % images.length
+    }
+    setPage([nextIndex, newDirection])
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') paginate(-1)
+      if (e.key === 'ArrowRight') paginate(1)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [currentIndex, images.length, onClose])
+
+  if (!project || images.length === 0) return null
+
+  const currentImg = images[currentIndex]
+
+  const slideVariants = {
+    enter: (dir) => ({
+      x: dir > 0 ? 80 : -80,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir) => ({
+      x: dir < 0 ? 80 : -80,
+      opacity: 0,
+    }),
+  }
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="lightbox-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="lightbox-content"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="lightbox-header">
+            <div className="lightbox-title">
+              <h3>{project.name}</h3>
+              <span>
+                {currentIndex + 1} / {images.length}
+              </span>
+            </div>
+            <button
+              type="button"
+              className="lightbox-close-btn"
+              onClick={onClose}
+              aria-label="Close viewer"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <div
+            className="lightbox-image-wrapper"
+            onClick={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect()
+              const clickX = e.clientX - rect.left
+              if (clickX < rect.width * 0.4) {
+                paginate(-1)
+              } else {
+                paginate(1)
+              }
+            }}
+            style={{ cursor: 'pointer' }}
+            title="Click photo to cycle"
+          >
+            <AnimatePresence custom={direction} mode="popLayout" initial={false}>
+              <motion.img
+                key={currentIndex}
+                src={currentImg.url}
+                alt={currentImg.caption || project.name}
+                className="lightbox-image"
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </AnimatePresence>
+          </div>
+
+          <div className="lightbox-footer">
+            <p className="lightbox-caption">{currentImg.caption}</p>
+
+            <div className="lightbox-controls">
+              <button
+                type="button"
+                className="lightbox-nav-btn"
+                onClick={() => paginate(-1)}
+                aria-label="Previous image"
+                title="Previous image"
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <button
+                type="button"
+                className="lightbox-nav-btn"
+                onClick={() => paginate(1)}
+                aria-label="Next image"
+                title="Next image"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
+function ProjectCard({ project, index = 0, onOpenLightbox }) {
+  const hasImages = project.images && project.images.length > 0
+
+  return (
+    <motion.div
       className="project-card"
-      href="#contact"
-      aria-label={`View ${project.name} project`}
       custom={index}
       variants={projectCardStackVariants}
     >
-      <div className={`project-visual ${project.className}`}>
-        <span className="project-grid" />
-        <span className="project-mark">{project.mark}</span>
-        <span className="project-orbit" />
-      </div>
-      <div className="project-copy">
-        <p className="eyebrow">{project.type}</p>
-        <div className="project-title-row">
-          <h3>{project.name}</h3>
-          <ArrowUpRight aria-hidden="true" />
+      {hasImages ? (
+        <ProjectImageSlideshow
+          images={project.images}
+          projectMark={project.mark}
+          className={project.className}
+          onOpenLightbox={(imgIndex) => onOpenLightbox && onOpenLightbox(project, imgIndex)}
+        />
+      ) : (
+        <div className={`project-visual ${project.className}`}>
+          <span className="project-grid" />
+          <span className="project-mark">{project.mark}</span>
+          <span className="project-orbit" />
         </div>
-        <p>{project.description}</p>
-      </div>
-    </motion.a>
+      )}
+      <a
+        className="project-copy-link"
+        href="#contact"
+        aria-label={`View ${project.name} project`}
+      >
+        <div className="project-copy">
+          <p className="eyebrow">{project.type}</p>
+          <div className="project-title-row">
+            <h3>{project.name}</h3>
+            <ArrowUpRight aria-hidden="true" />
+          </div>
+          <p>{project.description}</p>
+        </div>
+      </a>
+    </motion.div>
   )
 }
 
@@ -406,6 +712,7 @@ function AboutPassageReader({ text }) {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
+  const [lightboxState, setLightboxState] = useState({ isOpen: false, project: null, initialIndex: 0 })
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark'
   })
@@ -512,32 +819,60 @@ function App() {
         <article className="about-card surface-card">
           <AboutPassageReader text={aboutPassageText} />
         </article>
-        <div className="fact-grid-separated">
-          <div className="fact-card surface-card">
-            <BookOpen aria-hidden="true" />
-            <div>
-              <h3>Education</h3>
-              <ul>
-                <li>B.E. Computer Science Engineering</li>
-                <li>Thiagarajar College of Engineering</li>
-                <li>CGPA 8.60 · Third Year</li>
-              </ul>
-            </div>
-          </div>
-          <div className="fact-card surface-card">
-            <Bot aria-hidden="true" />
-            <div>
-              <h3>Industry Experience &amp; Focus</h3>
-              <ul>
-                <li>Interned at IdentifYou &amp; Elysian Intelligence</li>
-                <li>Building Agentic AI Middleware (Veridic)</li>
-                <li>Medical AI &amp; Federated Learning Research</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </motion.section>
 
+      {/* Solo Full-Width Education Section */}
+      <motion.section className="section-shell education-section" id="education" {...sectionMotion}>
+        <div className="section-heading">
+          <h2>Academic <em>Education</em></h2>
+        </div>
+        <article className="education-solo-card surface-card">
+          <div className="education-solo-body">
+            <div className="education-solo-info">
+              <div className="education-degree-header">
+                <span className="edu-tag">Undergraduate Degree</span>
+                <h3>B.E. Computer Science &amp; Engineering</h3>
+                <h4>Thiagarajar College of Engineering</h4>
+                <p className="edu-location-text">Madurai, Tamil Nadu &middot; Autonomous Institution</p>
+              </div>
+
+              <div className="edu-badges-row">
+                <span className="edu-badge-highlight">CGPA 8.60 / 10.0</span>
+                <span className="edu-badge-normal">3rd Year &middot; Batch 2024 - 2028</span>
+                <span className="edu-badge-normal">Full-Time Campus Program</span>
+              </div>
+
+              <div className="edu-description-block">
+                <p>
+                  Pursuing a Bachelor of Engineering in Computer Science with a strong core in AI Systems, Agentic Middleware,
+                  Data Structures, Database Engineering, and High-Performance Web Architectures.
+                </p>
+              </div>
+
+              <div className="edu-coursework-group">
+                <p className="edu-coursework-title">Key Core Subjects &amp; Focus Areas:</p>
+                <div className="edu-chips-wrap">
+                  <span className="edu-chip-item">Artificial Intelligence &amp; Agents</span>
+                  <span className="edu-chip-item">Data Structures &amp; Algorithms</span>
+                  <span className="edu-chip-item">Database Management Systems</span>
+                  <span className="edu-chip-item">Object Oriented Programming (C++)</span>
+                  <span className="edu-chip-item">Operating Systems &amp; Networks</span>
+                  <span className="edu-chip-item">Full-Stack Web Engineering</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="education-solo-logo">
+              <div className="tce-logo-solo-frame">
+                <img src="/content/tcelogo.png" alt="Thiagarajar College of Engineering Logo" className="tce-solo-img" />
+                <span className="tce-logo-caption">TCE Madurai</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </motion.section>
+
+      {/* Solo Full-Width Skills Section */}
       <motion.section className="section-shell skills-section" id="skills" {...sectionMotion}>
         <div className="section-heading section-heading-inline">
           <div>
@@ -563,6 +898,114 @@ function App() {
             </motion.div>
           ))}
         </motion.div>
+      </motion.section>
+
+      {/* Solo Full-Width Industry Experience Section */}
+      <motion.section className="section-shell experience-section" id="experience" {...sectionMotion}>
+        <div className="section-heading">
+          <h2>Industry <em>Experience</em></h2>
+        </div>
+        <div className="experience-solo-container surface-card">
+          {/* IdentifYou Internship - Top (Left-aligned Logo, Top-Right Duration, Bottom-Right Illustration) */}
+          <div className="experience-entry-card experience-left-aligned">
+            <div className="experience-entry-header">
+              <div className="company-solo-logo-frame">
+                <img src="/content/identifyou.png" alt="IdentifYou Technologies Logo" className="company-solo-img" />
+              </div>
+              <div className="company-solo-meta">
+                <div className="company-title-line">
+                  <h3>Software &amp; AI Developer Intern</h3>
+                  <span className="exp-duration-badge">Jun 2026 &ndash; Jul 2026 (1- Month)</span>
+                </div>
+                <h4 className="company-name">IdentifYou Technologies Private Ltd</h4>
+              </div>
+            </div>
+            <div className="experience-entry-body">
+              <ul className="exp-bullets-list">
+                <li>Architected full-stack features and AI middleware capabilities for production web applications.</li>
+                <li>Implemented REST APIs and optimized responsive front-end components using React &amp; Node.js.</li>
+                <li>Collaborated on real-time data integration and system performance improvements.</li>
+              </ul>
+              <div className="exp-tech-chips">
+                <span>React</span>
+                <span>Node.js</span>
+                <span>AI Agents</span>
+                <span>REST APIs</span>
+                <span>JavaScript</span>
+              </div>
+            </div>
+
+            {/* Bottom Right Corner Illustration for IdentifYou */}
+            <motion.div
+              className="exp-illustration-card exp-illustration-right"
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <div className="card-header-bar">
+                <span className="dot red" />
+                <span className="dot yellow" />
+                <span className="dot green" />
+                <span className="card-title">identifyou_ai.cpp</span>
+              </div>
+              <div className="card-code-body">
+                <p><span className="code-keyword">#include</span> &lt;<span className="code-str">memory</span>&gt;</p>
+                <p><span className="code-keyword">auto</span> <span className="code-var">pipeline</span> = <span className="code-class">std</span>::<span className="code-fn">make_shared</span>&lt;<span className="code-class">AIWorkflow</span>&gt;();</p>
+                <p><span className="code-var">pipeline</span>-&gt;<span className="code-fn">execute</span>();</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="experience-solo-divider" />
+
+          {/* Elysian Internship - Bottom (Right-aligned Logo, Top-Left Duration, Bottom-Left Illustration) */}
+          <div className="experience-entry-card experience-right-aligned">
+            <div className="experience-entry-header flex-row-reverse">
+              <div className="company-solo-logo-frame">
+                <img src="/content/elysian.png" alt="Elysian Intelligence Logo" className="company-solo-img" />
+              </div>
+              <div className="company-solo-meta text-right">
+                <div className="company-title-line flex-row-reverse">
+                  <h3>Software Developer Intern</h3>
+                  <span className="exp-duration-badge">Jun 2025 &ndash; Jul 2025 (2- weeks)</span>
+                </div>
+                <h4 className="company-name">Elysian Intelligence Business Solutions</h4>
+              </div>
+            </div>
+            <div className="experience-entry-body text-right-body">
+              <ul className="exp-bullets-list exp-bullets-right">
+                <li>Engineered scalable full-stack web solutions and backend services for client projects.</li>
+                <li>Handled real-time state management, UI component optimizations, and database interactions.</li>
+                <li>Participated in core software architecture design and cross-functional feature development.</li>
+              </ul>
+              <div className="exp-tech-chips flex-end">
+                <span>Full-Stack Engineering</span>
+                <span>React</span>
+                <span>Express / Node</span>
+                <span>Database Engineering</span>
+                <span>Web Performance</span>
+              </div>
+            </div>
+
+            {/* Bottom Left Corner Illustration for EIBS */}
+            <motion.div
+              className="exp-illustration-card exp-illustration-left"
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            >
+              <div className="card-header-bar">
+                <span className="dot red" />
+                <span className="dot yellow" />
+                <span className="dot green" />
+                <span className="card-title">eibs_engine.cpp</span>
+              </div>
+              <div className="card-code-body">
+                <p><span className="code-keyword">#include</span> &lt;<span className="code-str">vector</span>&gt;</p>
+                <p><span className="code-class">WebEngine</span> <span className="code-var">server</span>;</p>
+                <p><span className="code-var">server</span>.<span className="code-fn">optimizeState</span>();</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </motion.section>
 
       <motion.section className="section-shell certificates-section" id="certificates" {...sectionMotion}>
@@ -615,7 +1058,14 @@ function App() {
             viewport={{ once: true, amount: 0.2 }}
           >
             {developmentProjects.map((project, index) => (
-              <ProjectCard key={project.name} project={project} index={index} />
+              <ProjectCard
+                key={project.name}
+                project={project}
+                index={index}
+                onOpenLightbox={(proj, imgIdx) =>
+                  setLightboxState({ isOpen: true, project: proj, initialIndex: imgIdx })
+                }
+              />
             ))}
           </motion.div>
         </div>
@@ -631,7 +1081,14 @@ function App() {
             viewport={{ once: true, amount: 0.2 }}
           >
             {otherProjects.map((project, index) => (
-              <ProjectCard key={project.name} project={project} index={index} />
+              <ProjectCard
+                key={project.name}
+                project={project}
+                index={index}
+                onOpenLightbox={(proj, imgIdx) =>
+                  setLightboxState({ isOpen: true, project: proj, initialIndex: imgIdx })
+                }
+              />
             ))}
             <motion.div
               className="coming-soon"
@@ -644,6 +1101,14 @@ function App() {
           </motion.div>
         </div>
       </motion.section>
+
+      {lightboxState.isOpen && (
+        <ProjectLightboxModal
+          project={lightboxState.project}
+          initialIndex={lightboxState.initialIndex}
+          onClose={() => setLightboxState({ isOpen: false, project: null, initialIndex: 0 })}
+        />
+      )}
 
       <motion.section className="section-shell contact-section" id="contact" {...sectionMotion}>
         <div className="contact-card">
@@ -662,14 +1127,13 @@ function App() {
                 <span className="dot red" />
                 <span className="dot yellow" />
                 <span className="dot green" />
-                <span className="card-title">veridic_middleware.ts</span>
+                <span className="card-title">veridic_engine.cpp</span>
               </div>
               <div className="card-code-body">
-                <p><span className="code-keyword">const</span> <span className="code-var">agent</span> = <span className="code-keyword">new</span> <span className="code-class">AgentTrustSystem</span>()</p>
-                <p><span className="code-var">agent</span>.<span className="code-fn">verifyGrounding</span>(&#123; <span className="code-prop">status</span>: <span className="code-str">&apos;SECURE&apos;</span> &#125;)</p>
-                <div className="status-indicator-pill">
-                  <span className="pulse-dot" /> SYSTEM ACTIVE &middot; READY TO BUILD
-                </div>
+                <p><span className="code-keyword">#include</span> &lt;<span className="code-str">memory</span>&gt;</p>
+                <p><span className="code-keyword">#include</span> <span className="code-str">&quot;agent_trust.hpp&quot;</span></p>
+                <p><span className="code-keyword">auto</span> <span className="code-var">agent</span> = <span className="code-class">std</span>::<span className="code-fn">make_unique</span>&lt;<span className="code-class">AgentTrustSystem</span>&gt;();</p>
+                <p><span className="code-var">agent</span>-&gt;<span className="code-fn">verifyGrounding</span>(<span className="code-str">&quot;SECURE&quot;</span>);</p>
               </div>
             </div>
 
