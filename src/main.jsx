@@ -57,14 +57,14 @@ const socials = [
 ]
 
 const navItems = [
-  { label: 'Home', href: '#home', icon: Home },
-  { label: 'About', href: '#about', icon: User },
-  { label: 'Education', href: '#education', icon: BookOpen },
-  { label: 'Skills', href: '#skills', icon: Braces },
-  { label: 'Experience', href: '#experience', icon: Briefcase },
-  { label: 'Projects', href: '#projects', icon: Folder },
-  { label: 'Certificates', href: '#certificates', icon: Award },
-  { label: 'Contact', href: '#contact', icon: Mail },
+  { label: 'Home', href: '#home', icon: Home, showOnMobile: true },
+  { label: 'About', href: '#about', icon: User, showOnMobile: true },
+  { label: 'Education', href: '#education', icon: BookOpen, showOnMobile: false },
+  { label: 'Skills', href: '#skills', icon: Braces, showOnMobile: true },
+  { label: 'Experience', href: '#experience', icon: Briefcase, showOnMobile: false },
+  { label: 'Projects', href: '#projects', icon: Folder, showOnMobile: true },
+  { label: 'Certificates', href: '#certificates', icon: Award, showOnMobile: false },
+  { label: 'Contact', href: '#contact', icon: Mail, showOnMobile: true },
 ]
 
 const certificates = [
@@ -792,8 +792,14 @@ function App() {
             <span className="resume-text">Download Resume</span>
           </a>
           <div className="nav-links">
-            {navItems.map(({ label, href, icon: Icon }) => (
-              <a key={label} href={href} aria-label={label} title={label}>
+            {navItems.map(({ label, href, icon: Icon, showOnMobile }) => (
+              <a
+                key={label}
+                href={href}
+                aria-label={label}
+                title={label}
+                className={showOnMobile ? 'nav-link-item nav-mobile-link' : 'nav-link-item nav-desktop-only'}
+              >
                 <Icon aria-hidden="true" strokeWidth={1.7} />
                 <span className="nav-label">{label}</span>
               </a>
