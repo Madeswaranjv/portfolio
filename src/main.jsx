@@ -46,7 +46,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles.css'
 
-const email = 'madeswaranjv@gmail.com'
+const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || ''
+const email = import.meta.env.VITE_CONTACT_EMAIL || 'madeswaranjv@gmail.com'
 
 const socials = [
   { label: 'LinkedIn', icon: FaLinkedinIn, href: 'https://www.linkedin.com/in/madeswaran-j-v-4909b8325' },
