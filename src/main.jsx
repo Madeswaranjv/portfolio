@@ -159,6 +159,7 @@ const developmentProjects = [
     description: 'Semantic grounding middleware that validates tool calls beyond schema correctness.',
     className: 'veridic',
     mark: 'V',
+    github: 'https://github.com/Madeswaranjv',
   },
   {
     name: 'FlavorDash',
@@ -166,6 +167,7 @@ const developmentProjects = [
     description: 'Luxury restaurant ordering with real-time operations and menu-grounded AI planning.',
     className: 'flavordash',
     mark: 'FD',
+    github: 'https://github.com/Madeswaranjv/RestaurantOrdering.git',
     images: [
       {
         url: '/content/flavordash/flavordash-1.png',
@@ -191,6 +193,7 @@ const developmentProjects = [
     description: 'Federated learning with patient-similarity graphs for skin disease diagnosis.',
     className: 'fedderm',
     mark: 'FG',
+    github: 'https://github.com/Madeswaranjv',
   },
   {
     name: 'CraftyWrap',
@@ -198,6 +201,7 @@ const developmentProjects = [
     description: 'An AWS-deployed handmade-yarn storefront with OAuth and category browsing.',
     className: 'craftywrap',
     mark: 'CW',
+    github: 'https://github.com/Madeswaranjv/CraftyWrap.git',
     images: [
       {
         url: '/content/craftywrap/craftywrap-4.png',
@@ -221,11 +225,12 @@ const developmentProjects = [
 
 const otherProjects = [
   {
-    name: 'Go Schema Validator',
-    type: 'Backend Tooling',
-    description: 'A reserved space for the upcoming schema validation project.',
-    className: 'go-validator',
-    mark: 'GO',
+    name: 'Ultra',
+    type: 'AI-Native Shell',
+    description: 'AI-native operating shell analyzing codebases via Tree-sitter AST parsing, parallel scanning, and structural indexing.',
+    className: 'ultra',
+    mark: 'ULT',
+    github: 'https://github.com/Madeswaranjv/UltraAI-Native-Operatingshell.git',
   },
 ]
 
@@ -545,6 +550,7 @@ function ProjectLightboxModal({ project, initialIndex = 0, onClose }) {
 
 function ProjectCard({ project, index = 0, onOpenLightbox }) {
   const hasImages = project.images && project.images.length > 0
+  const githubUrl = project.github || 'https://github.com/Madeswaranjv'
 
   return (
     <motion.div
@@ -566,20 +572,32 @@ function ProjectCard({ project, index = 0, onOpenLightbox }) {
           <span className="project-orbit" />
         </div>
       )}
-      <a
-        className="project-copy-link"
-        href="#contact"
-        aria-label={`View ${project.name} project`}
-      >
-        <div className="project-copy">
-          <p className="eyebrow">{project.type}</p>
-          <div className="project-title-row">
-            <h3>{project.name}</h3>
-            <ArrowUpRight aria-hidden="true" />
+      <div className="project-copy">
+        <p className="eyebrow">{project.type}</p>
+        <div className="project-title-row">
+          <h3>{project.name}</h3>
+          <div className="project-action-links">
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`View ${project.name} GitHub Repository`}
+              title="View Repository on GitHub"
+              className="project-github-link"
+            >
+              <FaGithub aria-hidden="true" />
+            </a>
+            <a
+              href="#contact"
+              aria-label={`Contact about ${project.name}`}
+              className="project-arrow-link"
+            >
+              <ArrowUpRight aria-hidden="true" />
+            </a>
           </div>
-          <p>{project.description}</p>
         </div>
-      </a>
+        <p>{project.description}</p>
+      </div>
     </motion.div>
   )
 }
@@ -603,31 +621,50 @@ function LoadingScreen({ onComplete }) {
     return () => clearInterval(timer)
   }, [onComplete])
 
+  const perimeter = 288
+  const strokeOffset = perimeter - (perimeter * progress) / 100
+
   return (
     <motion.div
       className="loading-screen"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, y: '-100%', transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
+      exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } }}
     >
       <div className="loading-content">
         <motion.div
-          className="loading-logo"
+          className="loading-box-wrapper"
           initial={{ opacity: 0, scale: 0.88 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="loading-mark">M</span>
-          <h2>MADESWARAN <em>JV</em></h2>
+          <svg className="loading-box-svg" viewBox="0 0 80 80" width="90" height="90">
+            <rect
+              x="4"
+              y="4"
+              width="72"
+              height="72"
+              fill="none"
+              stroke="rgba(200, 164, 90, 0.15)"
+              strokeWidth="2.5"
+            />
+            <rect
+              x="4"
+              y="4"
+              width="72"
+              height="72"
+              fill="none"
+              stroke="var(--gold, #c8a45a)"
+              strokeWidth="3"
+              strokeDasharray={perimeter}
+              strokeDashoffset={strokeOffset}
+              style={{
+                transition: 'stroke-dashoffset 0.1s linear',
+                filter: 'drop-shadow(0 0 8px rgba(200, 164, 90, 0.6))',
+              }}
+            />
+          </svg>
+          <span className="loading-box-letter">M</span>
         </motion.div>
-        <div className="loading-bar-container">
-          <motion.div
-            className="loading-bar-fill"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <div className="loading-meta">
-          <p className="loading-tagline">AI AGENTS &middot; FULL-STACK &middot; SYSTEMS</p>
-        </div>
       </div>
     </motion.div>
   )
@@ -837,7 +874,7 @@ function App() {
               </div>
 
               <div className="edu-badges-row">
-                <span className="edu-badge-highlight">CGPA 8.60 / 10.0</span>
+                <span className="edu-badge-highlight">CGPA 8.54 / 10.0</span>
                 <span className="edu-badge-normal">3rd Year &middot; Batch 2024 - 2028</span>
                 <span className="edu-badge-normal">Full-Time Campus Program</span>
               </div>
