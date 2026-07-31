@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5e8cd" />
+      <stop offset="45%" stop-color="#c8a45a" />
+      <stop offset="100%" stop-color="#9d7a36" />
+    </linearGradient>
+  </defs>
+
+  <!-- Dark Background -->
+  <rect width="100" height="100" rx="20" fill="#0b0b0b" />
+
+  <!-- Outer Frame Box matching Loading Screen -->
+  <rect
+    x="10"
+    y="10"
+    width="80"
+    height="80"
+    rx="4"
+    fill="none"
+    stroke="url(#goldGrad)"
+    stroke-width="5"
+  />
+
+  <!-- Inner M Logo Letter Vector Path -->
+  <path
+    fill="url(#goldGrad)"
+    d="M 25 74 V 26 H 35 L 50 54 L 65 26 H 75 V 74 H 65 V 42 L 53 62 H 47 L 35 42 V 74 Z"
+  />
+</svg>
