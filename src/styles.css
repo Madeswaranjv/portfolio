@@ -1038,6 +1038,27 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
 .project-arrow-link svg { width: 1rem; height: 1rem; }
 .project-arrow-link:hover { color: #ffffff; transform: translateY(-2px) scale(1.15); }
 .project-copy > p:last-child { margin: .55rem 0 0; color: var(--project-desc); font-size: .71rem; line-height: 1.55; }
+.project-live-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.65rem;
+  background: rgba(200, 164, 90, 0.08);
+  border: 1px solid rgba(200, 164, 90, 0.28);
+  border-radius: 4px;
+  color: var(--gold, #c8a45a);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+.project-live-btn:hover {
+  background: var(--gold, #c8a45a);
+  color: #0b0b0b;
+  border-color: var(--gold, #c8a45a);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(200, 164, 90, 0.25);
+}
 .coming-soon { min-height: 14.7rem; display: grid; place-content: center; justify-items: center; gap: .45rem; color: var(--text-muted); border: 1px dashed var(--coming-soon-border); border-radius: 0; background: var(--coming-soon-bg); text-align: center; }.coming-soon span { color: var(--gold); font-size: 2rem; font-weight: 200; }.coming-soon p { margin: 0; font-size: .72rem; line-height: 1.55; }
 
 .contact-section { padding-bottom: 6rem; }

@@ -12,9 +12,11 @@ import {
   Code2,
   Cpu,
   Database,
+  ExternalLink,
   FileDown,
   Folder,
   GitBranch,
+  Globe,
   Home,
   Layers3,
   Mail,
@@ -163,12 +165,13 @@ const developmentProjects = [
     github: 'https://github.com/Madeswaranjv',
   },
   {
-    name: 'FlavorDash',
+    name: 'FlavourDash',
     type: 'Full-stack Platform',
     description: 'Luxury restaurant ordering with real-time operations and menu-grounded AI planning.',
     className: 'flavordash',
     mark: 'FD',
     github: 'https://github.com/Madeswaranjv/RestaurantOrdering.git',
+    liveUrl: 'https://restaurant-ordering-zeta.vercel.app/',
     images: [
       {
         url: '/content/flavordash/flavordash-1.png',
@@ -552,6 +555,7 @@ function ProjectLightboxModal({ project, initialIndex = 0, onClose }) {
 function ProjectCard({ project, index = 0, onOpenLightbox }) {
   const hasImages = project.images && project.images.length > 0
   const githubUrl = project.github || 'https://github.com/Madeswaranjv'
+  const liveUrl = project.liveUrl || project.live || project.url || null
 
   return (
     <motion.div
@@ -589,8 +593,11 @@ function ProjectCard({ project, index = 0, onOpenLightbox }) {
               <FaGithub aria-hidden="true" />
             </a>
             <a
-              href="#contact"
-              aria-label={`Contact about ${project.name}`}
+              href={liveUrl || "#contact"}
+              target={liveUrl ? "_blank" : undefined}
+              rel={liveUrl ? "noreferrer" : undefined}
+              aria-label={liveUrl ? `Visit ${project.name} live website` : `Contact about ${project.name}`}
+              title={liveUrl ? "Visit Live Website" : "Contact about this project"}
               className="project-arrow-link"
             >
               <ArrowUpRight aria-hidden="true" />
@@ -598,6 +605,21 @@ function ProjectCard({ project, index = 0, onOpenLightbox }) {
           </div>
         </div>
         <p>{project.description}</p>
+        {liveUrl && (
+          <div style={{ marginTop: '0.65rem' }}>
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="project-live-btn"
+              title={`Open ${project.name} Live Demo`}
+            >
+              <Globe size={13} />
+              <span>Live Site</span>
+              <ExternalLink size={12} />
+            </a>
+          </div>
+        )}
       </div>
     </motion.div>
   )
