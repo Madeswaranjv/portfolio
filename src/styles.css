@@ -1457,9 +1457,14 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 
+[data-theme="light"] .stock-illustration-container {
+  background: #ffffff;
+}
+
 [data-theme="light"] .stock-illustration-img {
   mix-blend-mode: multiply;
-  filter: none;
+  filter: invert(1) hue-rotate(180deg) brightness(1.1) contrast(1.4);
+  background: transparent;
 }
 
 .flex-between {
