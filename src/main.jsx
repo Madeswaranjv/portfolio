@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import {
+  Activity,
   ArrowUpRight,
   Award,
   BookOpen,
@@ -29,6 +30,7 @@ import {
   Sun,
   User,
   X,
+  Zap,
 } from 'lucide-react'
 import { FaAws, FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6'
 import {
@@ -770,6 +772,42 @@ function AboutPassageReader({ text }) {
   )
 }
 
+function IdentifYouIllustration() {
+  return (
+    <motion.div
+      className="exp-illustration-card exp-illustration-right exp-diagram-widget"
+      animate={{ y: [0, -6, 0] }}
+      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+    >
+      <div className="stock-illustration-container">
+        <img
+          src="/content/developer_stock_illustration.png"
+          alt="Developer at computer desk illustration"
+          className="stock-illustration-img"
+        />
+      </div>
+    </motion.div>
+  )
+}
+
+function ElysianIllustration() {
+  return (
+    <motion.div
+      className="exp-illustration-card exp-illustration-left exp-diagram-widget"
+      animate={{ y: [0, 6, 0] }}
+      transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+    >
+      <div className="stock-illustration-container">
+        <img
+          src="/content/developer_stock_illustration.png"
+          alt="Developer at computer desk illustration"
+          className="stock-illustration-img"
+        />
+      </div>
+    </motion.div>
+  )
+}
+
 function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [lightboxState, setLightboxState] = useState({ isOpen: false, project: null, initialIndex: 0 })
@@ -1002,23 +1040,7 @@ function App() {
             </div>
 
             {/* Bottom Right Corner Illustration for IdentifYou */}
-            <motion.div
-              className="exp-illustration-card exp-illustration-right"
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <div className="card-header-bar">
-                <span className="dot red" />
-                <span className="dot yellow" />
-                <span className="dot green" />
-                <span className="card-title">identifyou_ai.cpp</span>
-              </div>
-              <div className="card-code-body">
-                <p><span className="code-keyword">#include</span> &lt;<span className="code-str">memory</span>&gt;</p>
-                <p><span className="code-keyword">auto</span> <span className="code-var">pipeline</span> = <span className="code-class">std</span>::<span className="code-fn">make_shared</span>&lt;<span className="code-class">AIWorkflow</span>&gt;();</p>
-                <p><span className="code-var">pipeline</span>-&gt;<span className="code-fn">execute</span>();</p>
-              </div>
-            </motion.div>
+            <IdentifYouIllustration />
           </div>
 
           <div className="experience-solo-divider" />
@@ -1053,23 +1075,7 @@ function App() {
             </div>
 
             {/* Bottom Left Corner Illustration for EIBS */}
-            <motion.div
-              className="exp-illustration-card exp-illustration-left"
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-            >
-              <div className="card-header-bar">
-                <span className="dot red" />
-                <span className="dot yellow" />
-                <span className="dot green" />
-                <span className="card-title">eibs_engine.cpp</span>
-              </div>
-              <div className="card-code-body">
-                <p><span className="code-keyword">#include</span> &lt;<span className="code-str">vector</span>&gt;</p>
-                <p><span className="code-class">WebEngine</span> <span className="code-var">server</span>;</p>
-                <p><span className="code-var">server</span>.<span className="code-fn">optimizeState</span>();</p>
-              </div>
-            </motion.div>
+            <ElysianIllustration />
           </div>
         </div>
       </motion.section>
