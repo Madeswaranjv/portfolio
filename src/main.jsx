@@ -279,6 +279,21 @@ const developmentProjects = [
 
 const otherProjects = [
   {
+    name: 'FedDermGNN',
+    type: 'Medical AI Research',
+    description: 'Federated learning with patient-similarity graphs for skin disease diagnosis.',
+    longDescription: 'FedDermGNN is a privacy-preserving medical AI research platform utilizing federated graph neural networks for multi-site dermatological disease diagnosis. By constructing patient-similarity graphs across distributed clinical nodes without centralizing sensitive patient imaging data, it achieves state-of-the-art diagnostic accuracy while upholding strict clinical privacy and data sovereignty standards.',
+    highlights: [
+      'Decentralized federated training across clinical nodes without centralizing raw patient images.',
+      'Patient-similarity graph neural networks (GNNs) capturing inter-case topological and clinical feature correlations.',
+      'Robust differential privacy mechanisms safeguarding against model inversion and reconstruction attacks.',
+    ],
+    techStack: ['PyTorch', 'PyTorch Geometric', 'Federated Learning', 'Graph Neural Networks', 'Python'],
+    className: 'fedderm',
+    mark: 'FG',
+    github: 'https://github.com/Madeswaranjv',
+  },
+  {
     name: 'Ultra',
     type: 'AI-Native Shell',
     description: 'AI-native operating shell analyzing codebases via Tree-sitter AST parsing, parallel scanning, and structural indexing.',
@@ -1516,14 +1531,6 @@ function App() {
                 onOpenDetails={(proj) => setActiveProjectDetails(proj)}
               />
             ))}
-            <motion.div
-              className="coming-soon"
-              custom={otherProjects.length}
-              variants={projectCardStackVariants}
-            >
-              <span>+</span>
-              <p>More work<br />in progress</p>
-            </motion.div>
           </motion.div>
         </div>
       </motion.section>
