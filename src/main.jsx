@@ -13,11 +13,9 @@ import {
   Code2,
   Cpu,
   Database,
-  ExternalLink,
   FileDown,
   Folder,
   GitBranch,
-  Globe,
   Home,
   Layers3,
   Mail,
@@ -48,6 +46,7 @@ import {
 } from 'react-icons/si'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
+import MagnificationDock from './components/MagnificationDock'
 import './styles.css'
 
 const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || ''
@@ -162,6 +161,13 @@ const developmentProjects = [
     name: 'Veridic',
     type: 'AI Agent Safety',
     description: 'Semantic grounding middleware that validates tool calls beyond schema correctness.',
+    longDescription: 'Veridic is an AI agent safety and semantic grounding middleware that inspects, reasons over, and validates LLM tool calls beyond shallow schema correctness. Acting as an execution interceptor for Model Context Protocol (MCP) clients, it prevents catastrophic tool hallucination, prompt injection bypasses, and unauthorized state mutation in automated environments.',
+    highlights: [
+      'Intercepts MCP and function calling payloads before execution to evaluate semantic safety boundaries.',
+      'Employs dynamic constraint solvers and heuristic safety graphs to detect adversarial prompt attacks.',
+      'Maintains real-time audit logs and automated state rollback triggers for mission-critical agent workflows.',
+    ],
+    techStack: ['Python', 'MCP Protocol', 'FastAPI', 'LLM Tool Calling', 'Semantic Verification'],
     className: 'veridic',
     mark: 'V',
     github: 'https://github.com/Madeswaranjv',
@@ -170,6 +176,13 @@ const developmentProjects = [
     name: 'FlavourDash',
     type: 'Full-stack Platform',
     description: 'Luxury restaurant ordering with real-time operations and menu-grounded AI planning.',
+    longDescription: 'FlavourDash is an end-to-end luxury gastronomic ordering platform engineered for seamless culinary experiences. It merges white-glove digital checkout workflows, real-time kitchen operations, and menu-grounded AI recommendations into a responsive, high-performance web system.',
+    highlights: [
+      'Real-time order lifecycle tracking and kitchen display management with instant operational updates.',
+      'Interactive AI-assisted culinary planner providing bespoke dish pairings based on dietary preferences.',
+      'Role-based authentication, dynamic menu filtering, and custom white-glove invoice generation.',
+    ],
+    techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'Tailwind CSS', 'Vercel'],
     className: 'flavordash',
     mark: 'FD',
     github: 'https://github.com/Madeswaranjv/RestaurantOrdering.git',
@@ -194,36 +207,71 @@ const developmentProjects = [
     ],
   },
   {
-    name: 'FedDermGNN',
-    type: 'Medical AI Research',
-    description: 'Federated learning with patient-similarity graphs for skin disease diagnosis.',
-    className: 'fedderm',
-    mark: 'FG',
-    github: 'https://github.com/Madeswaranjv',
+    name: 'Healix',
+    type: 'Clinical AI Platform',
+    description: 'Full-stack clinical intelligence assistant featuring streaming LLM reasoning, live medical search, and patient profile grounding.',
+    longDescription: 'Healix is a comprehensive full-stack clinical intelligence platform and AI health assistant. Powered by Cortex M3, it provides real-time SSE token streaming, multi-format medical document ingestion (PDFs, Word docs, lab reports), live clinical web retrieval via Tavily, and patient clinical profile safety grounding.',
+    highlights: [
+      'High-concurrency FastAPI backend with SSE streaming for low-latency clinical query responses.',
+      'Multi-document parsing and vector embeddings in ChromaDB for medical report RAG lookups.',
+      'Clinical safety rails, emergency symptom triage workflows, and WHO/CDC guideline cross-referencing.',
+    ],
+    techStack: ['React', 'Vite', 'FastAPI', 'Python', 'ChromaDB', 'Zustand', 'Tavily API'],
+    className: 'healix',
+    mark: 'HX',
+    logo: '/content/healix/healix-logo.png',
+    github: 'https://github.com/Madeswaranjv/Healix.git',
+    images: [
+      {
+        url: '/content/healix/healix-1.png',
+        caption: 'Healix Clinical Assistant — Medical Query Interface',
+      },
+      {
+        url: '/content/healix/healix-2.png',
+        caption: 'Structured Clinical Evidence & Public Health Impact',
+      },
+      {
+        url: '/content/healix/healix-3.png',
+        caption: 'Emergency Triage & Reliable CDC Guidelines Reference',
+      },
+      {
+        url: '/content/healix/healix-4.png',
+        caption: 'Epidemiological Risk Modeling & WHO Pandemic Analysis',
+      },
+    ],
   },
   {
     name: 'CraftyWrap',
     type: 'E-commerce',
     description: 'An AWS-deployed handmade-yarn storefront with OAuth and category browsing.',
+    longDescription: 'CraftyWrap is a dedicated e-commerce web platform deployed on AWS infrastructure, specialized for handcrafted artisanal yarn dolls and bespoke knitting collections. It features secure OAuth authentication, dynamic catalog browsing, personalized customer wishlists, and an optimized checkout experience.',
+    highlights: [
+      'Full-stack storefront architecture containerized and deployed across AWS cloud services.',
+      'Secure user authentication with social OAuth login and token-based session verification.',
+      'Dynamic client-side category filtering, inventory management, and modular authentication modals.',
+    ],
+    techStack: ['React', 'Express.js', 'MySQL', 'AWS EC2 / S3', 'Node.js', 'CSS Modules'],
     className: 'craftywrap',
     mark: 'CW',
+    logo: '/content/craftywrap/craftywrap-logo.png',
     github: 'https://github.com/Madeswaranjv/CraftyWrap.git',
+    liveUrl: 'https://craftywrap.com',
     images: [
       {
-        url: '/content/craftywrap/craftywrap-4.png',
+        url: '/content/craftywrap/craftywrap-hero.png',
         caption: 'Storefront Homepage — Handcrafted Yarn Dolls',
       },
       {
-        url: '/content/craftywrap/craftywrap-1.png',
-        caption: 'Handcrafted Collections Catalog & Product Filters',
+        url: '/content/craftywrap/craftywrap-collections.png',
+        caption: 'Our Collections Catalog & Filterable Product Grid',
       },
       {
         url: '/content/craftywrap/craftywrap-3.png',
         caption: 'User Login & Account Authentication Modal',
       },
       {
-        url: '/content/craftywrap/craftywrap-2.png',
-        caption: 'Customer Registration & Account Creation Modal',
+        url: '/content/craftywrap/craftywrap-checkout.png',
+        caption: 'Complete Checkout & Razorpay Online Payment',
       },
     ],
   },
@@ -234,6 +282,13 @@ const otherProjects = [
     name: 'Ultra',
     type: 'AI-Native Shell',
     description: 'AI-native operating shell analyzing codebases via Tree-sitter AST parsing, parallel scanning, and structural indexing.',
+    longDescription: 'Ultra is an AI-native operating shell and developer environment built for deep codebase comprehension. By integrating Tree-sitter AST parsing, multi-threaded parallel scanning, and structural code indexing, Ultra allows developers and autonomous agents to explore and refactor large code repositories with lightning speed.',
+    highlights: [
+      'Tree-sitter AST parser generates comprehensive structural syntax graphs for multi-language repositories.',
+      'High-throughput multi-threaded worker pools for instantaneous sub-second symbol lookups.',
+      'Terminal-first developer interface with contextual AI prompt piping and automated diff generation.',
+    ],
+    techStack: ['Rust', 'Tree-sitter', 'Python', 'CLI Architecture', 'AST Parsing'],
     className: 'ultra',
     mark: 'ULT',
     github: 'https://github.com/Madeswaranjv/UltraAI-Native-Operatingshell.git',
@@ -554,7 +609,132 @@ function ProjectLightboxModal({ project, initialIndex = 0, onClose }) {
   )
 }
 
-function ProjectCard({ project, index = 0, onOpenLightbox }) {
+function ProjectDetailsModal({ project, onClose }) {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
+  if (!project) return null
+
+  const githubUrl = project.github || 'https://github.com/Madeswaranjv'
+  const liveUrl = project.liveUrl || project.live || project.url || null
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="project-modal-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="project-modal-dialog surface-card"
+          initial={{ scale: 0.92, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.94, opacity: 0, y: 15 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Modal Header */}
+          <div className="project-modal-header">
+            <div>
+              <span className="project-modal-eyebrow">{project.type}</span>
+              <div className="project-modal-title-row">
+                <div className={`project-modal-mark ${project.className} ${project.logo ? 'has-custom-logo' : ''}`}>
+                  {project.logo ? (
+                    <img src={project.logo} alt={`${project.name} Logo`} className="project-modal-logo-img" />
+                  ) : (
+                    project.mark
+                  )}
+                </div>
+                <h2>{project.name}</h2>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="project-modal-close"
+              onClick={onClose}
+              aria-label="Close details"
+              title="Close (Esc)"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Modal Body */}
+          <div className="project-modal-body">
+            <div className="project-modal-section">
+              <h4 className="project-modal-section-title">Overview</h4>
+              <p className="project-modal-long-desc">
+                {project.longDescription || project.description}
+              </p>
+            </div>
+
+            {project.highlights && project.highlights.length > 0 && (
+              <div className="project-modal-section">
+                <h4 className="project-modal-section-title">Key Architectural Features</h4>
+                <ul className="project-modal-highlights">
+                  {project.highlights.map((item, idx) => (
+                    <li key={idx}>
+                      <span className="highlight-bullet" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {project.techStack && project.techStack.length > 0 && (
+              <div className="project-modal-section">
+                <h4 className="project-modal-section-title">Technologies &amp; Architecture</h4>
+                <div className="project-modal-chips">
+                  {project.techStack.map((tech) => (
+                    <span key={tech} className="project-modal-chip">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Modal Footer Actions */}
+          <div className="project-modal-footer">
+            {liveUrl && (
+              <a
+                href={liveUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="gold-button project-modal-action-btn"
+                title="Visit Live Deployment"
+              >
+                <span>Visit Live Website</span>
+                <ArrowUpRight size={15} />
+              </a>
+            )}
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="outline-button project-modal-action-btn"
+              title="View Repository on GitHub"
+            >
+              <FaGithub size={15} />
+              <span>View Source Code</span>
+            </a>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
+function ProjectCard({ project, index = 0, onOpenLightbox, onOpenDetails }) {
   const hasImages = project.images && project.images.length > 0
   const githubUrl = project.github || 'https://github.com/Madeswaranjv'
   const liveUrl = project.liveUrl || project.live || project.url || null
@@ -579,11 +759,17 @@ function ProjectCard({ project, index = 0, onOpenLightbox }) {
           <span className="project-orbit" />
         </div>
       )}
-      <div className="project-copy">
+      <div
+        className="project-copy project-copy-clickable"
+        onClick={() => onOpenDetails && onOpenDetails(project)}
+        role="button"
+        tabIndex={0}
+        aria-label={`View detailed description for ${project.name}`}
+      >
         <p className="eyebrow">{project.type}</p>
         <div className="project-title-row">
           <h3>{project.name}</h3>
-          <div className="project-action-links">
+          <div className="project-action-links" onClick={(e) => e.stopPropagation()}>
             <a
               href={githubUrl}
               target="_blank"
@@ -607,21 +793,10 @@ function ProjectCard({ project, index = 0, onOpenLightbox }) {
           </div>
         </div>
         <p>{project.description}</p>
-        {liveUrl && (
-          <div style={{ marginTop: '0.65rem' }}>
-            <a
-              href={liveUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="project-live-btn"
-              title={`Open ${project.name} Live Demo`}
-            >
-              <Globe size={13} />
-              <span>Live Site</span>
-              <ExternalLink size={12} />
-            </a>
-          </div>
-        )}
+        <div className="project-details-indicator">
+          <span>Read More Details</span>
+          <ArrowUpRight size={11} aria-hidden="true" />
+        </div>
       </div>
     </motion.div>
   )
@@ -695,7 +870,7 @@ function LoadingScreen({ onComplete }) {
   )
 }
 
-const aboutPassageText = `I'm Madeswaran JV, a third-year Computer Science Engineering student at Thiagarajar College of Engineering, focused on AI agents, full-stack development, and backend engineering. I've worked as an intern at IdentifYou Technologies Private Ltd and Elysian Intelligence Business Solutions, and I build end-to-end systems — from agent-trust middleware to real-time ordering platforms with role-based auth and live updates. I'm currently working on Veridic, a semantic grounding layer for MCP tool calls, alongside a federated-learning research project on medical imaging.`
+const aboutPassageText = `I'm Madeswaran JV, a third-year Computer Science Engineering student at Thiagarajar College of Engineering, focused on AI agents, full-stack development, and backend engineering. I've worked as an intern at IdentifYou Technologies Private Ltd and Elysian Intelligence Business Solutions, and I build end-to-end systems — from agent-trust middleware to real-time ordering platforms with role-based auth and live updates. I'm currently working on Veridic, a semantic grounding layer for MCP tool calls, alongside Healix, a full-stack clinical intelligence platform.`
 
 function AboutPassageReader({ text }) {
   const [activeCharIndex, setActiveCharIndex] = useState(-1)
@@ -808,9 +983,86 @@ function ElysianIllustration() {
   )
 }
 
+function ScrambleWord({ word, className, baseDelay = 150, duration = 2400 }) {
+  const MORPH_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  const [displayedChars, setDisplayedChars] = useState(() =>
+    word.split('').map(() => MORPH_CHARSET[Math.floor(Math.random() * MORPH_CHARSET.length)])
+  )
+  const [lockedIndices, setLockedIndices] = useState(() => new Set())
+
+  useEffect(() => {
+    let frameId
+    const startTime = performance.now() + baseDelay
+    const targetLetters = word.split('')
+    const totalCount = targetLetters.length
+
+    const updateFrame = (now) => {
+      const elapsed = now - startTime
+      if (elapsed < 0) {
+        frameId = requestAnimationFrame(updateFrame)
+        return
+      }
+
+      const progress = Math.min(elapsed / duration, 1)
+      const newlyLocked = new Set()
+
+      const nextChars = targetLetters.map((targetChar, i) => {
+        if (targetChar === ' ') return ' '
+        const charLockThreshold = (i + 1) / (totalCount + 0.3)
+        if (progress >= charLockThreshold || progress >= 1) {
+          newlyLocked.add(i)
+          return targetChar
+        }
+        return MORPH_CHARSET[Math.floor(Math.random() * MORPH_CHARSET.length)]
+      })
+
+      setDisplayedChars(nextChars)
+      setLockedIndices(newlyLocked)
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(updateFrame)
+      } else {
+        setDisplayedChars(targetLetters)
+        setLockedIndices(new Set(targetLetters.map((_, i) => i)))
+      }
+    }
+
+    frameId = requestAnimationFrame(updateFrame)
+    return () => cancelAnimationFrame(frameId)
+  }, [word, baseDelay, duration])
+
+  return (
+    <span className={className}>
+      {displayedChars.map((char, index) => {
+        const isLocked = lockedIndices.has(index)
+        return (
+          <motion.span
+            key={index}
+            className={`scramble-char-slot ${isLocked ? 'is-locked' : 'is-scrambling'}`}
+            initial={{ opacity: 0, scale: 3.2, filter: 'blur(20px)', z: 200 }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', z: 0 }}
+            transition={{
+              duration: 2.2,
+              delay: (baseDelay + index * 45) / 1000,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            style={{
+              display: 'inline-block',
+              transformOrigin: 'center center',
+            }}
+          >
+            {char}
+          </motion.span>
+        )
+      })}
+    </span>
+  )
+}
+
 function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [lightboxState, setLightboxState] = useState({ isOpen: false, project: null, initialIndex: 0 })
+  const [activeProjectDetails, setActiveProjectDetails] = useState(null)
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark'
   })
@@ -823,6 +1075,59 @@ function App() {
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
+
+  const [activeSection, setActiveSection] = useState('home')
+
+  useEffect(() => {
+    const sectionIds = ['home', 'about', 'education', 'skills', 'experience', 'projects', 'certificates', 'contact']
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 220
+      for (const id of sectionIds) {
+        const element = document.getElementById(id)
+        if (element) {
+          const top = element.offsetTop
+          const height = element.offsetHeight
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(id)
+            break
+          }
+        }
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const dockItems = useMemo(() => {
+    const navDockItems = navItems.map(({ label, href, icon: Icon }) => {
+      const sectionId = href.replace('#', '')
+      return {
+        label,
+        href,
+        icon: <Icon />,
+        isActive: activeSection === sectionId,
+      }
+    })
+
+    return [
+      {
+        label: 'Download Resume',
+        href: '/3rdyearresume.pdf',
+        download: 'Madeswaran_JV_Resume.pdf',
+        icon: <FileDown />,
+        className: 'dock-resume-btn',
+      },
+      { isDivider: true },
+      ...navDockItems,
+      { isDivider: true },
+      {
+        label: theme === 'dark' ? 'Light Mode' : 'Dark Mode',
+        onClick: toggleTheme,
+        icon: theme === 'dark' ? <Sun /> : <Moon />,
+      },
+    ]
+  }, [activeSection, theme])
 
   useEffect(() => {
     if (isLoading) {
@@ -840,79 +1145,125 @@ function App() {
 
       <main>
       <header className="site-header">
-        <nav className="nav-shell" aria-label="Primary navigation">
-          <a
-            className="resume-link"
-            href="/3rdyearresume.pdf"
-            download="Madeswaran_JV_Resume.pdf"
-            aria-label="Download Resume"
-            title="Download Resume"
-          >
-            <FileDown aria-hidden="true" strokeWidth={1.8} />
-            <span className="resume-text">Download Resume</span>
-          </a>
-          <div className="nav-links">
-            {navItems.map(({ label, href, icon: Icon, showOnMobile }) => (
-              <a
-                key={label}
-                href={href}
-                aria-label={label}
-                title={label}
-                className={showOnMobile ? 'nav-link-item nav-mobile-link' : 'nav-link-item nav-desktop-only'}
-              >
-                <Icon aria-hidden="true" strokeWidth={1.7} />
-                <span className="nav-label">{label}</span>
-              </a>
-            ))}
-          </div>
-          <button
-            className="theme-toggle-btn"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-          >
-            {theme === 'dark' ? <Sun aria-hidden="true" strokeWidth={1.8} /> : <Moon aria-hidden="true" strokeWidth={1.8} />}
-          </button>
-        </nav>
+        <MagnificationDock items={dockItems} />
       </header>
 
       <section className="hero section-shell" id="home">
-        <motion.div className="hero-copy" initial="hidden" animate="visible" variants={{
-          hidden: { opacity: 0, y: 25 },
-          visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] } },
-        }}>
-          <p className="kicker"><span /> Available for meaningful work</p>
-          <motion.h1
-            className="hero-title-animated"
-            initial={{ opacity: 0, y: 35, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        <motion.div
+          className="hero-copy"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0, y: 25 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.15 } },
+          }}
+        >
+          <motion.p
+            className="kicker"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="name-first">Madeswaran</span>{' '}
-            <span className="name-last">JV</span>
+            <span /> Available for meaningful work
+          </motion.p>
+
+          <motion.h1 className="hero-title-animated">
+            <ScrambleWord word="Madeswaran" className="name-first" baseDelay={950} duration={2400} />{' '}
+            <ScrambleWord word="JV" className="name-last" baseDelay={1250} duration={2200} />
           </motion.h1>
-          <p className="hero-description">
+
+          <motion.p
+            className="hero-description"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+          >
             Third-year CS Engineering student building AI agents and full-stack systems — from
             semantic-grounding middleware for MCP tools to production-style ordering platforms.
-          </p>
-          <a className="gold-button" href="#contact">Let&apos;s Talk <ArrowUpRight aria-hidden="true" /></a>
-          <SocialLinks className="hero-socials" />
+          </motion.p>
+          
+          <motion.div
+            className="hero-cta-group"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.55, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <a className="gold-button" href="#contact">Let&apos;s Talk <ArrowUpRight aria-hidden="true" /></a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <SocialLinks className="hero-socials" />
+          </motion.div>
         </motion.div>
 
-        <motion.div className="portrait-stage" initial={{ opacity: 0, scale: 0.93 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.85, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}>
-          <div className="portrait-halo halo-one" />
-          <div className="portrait-halo halo-two" />
+        <motion.div
+          className="portrait-stage"
+          initial={{
+            opacity: 0,
+            y: -650,
+            rotateX: 65,
+            rotateY: -30,
+            rotateZ: 20,
+            scale: 0.6,
+          }}
+          animate={{
+            opacity: [0, 1, 1, 1, 1],
+            y: [-650, 28, -12, 5, 0],
+            rotateX: [65, -16, 7, -2, 0],
+            rotateY: [-30, 9, -3, 1, 0],
+            rotateZ: [20, -6, 2, 0, 0],
+            scale: [0.6, 1.06, 0.97, 1.01, 1],
+          }}
+          transition={{
+            duration: 2.1,
+            delay: 1.05,
+            times: [0, 0.52, 0.74, 0.88, 1],
+            ease: 'easeOut',
+          }}
+        >
+          <motion.div
+            className="portrait-halo halo-one"
+            initial={{ scale: 0.3, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.2, delay: 2.05, ease: 'easeOut' }}
+          />
+          <motion.div
+            className="portrait-halo halo-two"
+            initial={{ scale: 0.3, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.45 }}
+            transition={{ duration: 1.4, delay: 2.15, ease: 'easeOut' }}
+          />
           <div className="portrait-frame">
             <div className="portrait-card-3d">
               <div className="portrait-face portrait-front">
-                <img src="/content/myphoto.png" alt="Madeswaran JV" />
+                <video
+                  autoPlay
+                  muted
+                  playsInline
+                  poster="/content/myphoto.png"
+                  className="profile-smile-video"
+                >
+                  <source src="/content/profile_smile.mp4" type="video/mp4" />
+                  <img src="/content/profile_smile.gif" alt="Madeswaran JV" />
+                </video>
               </div>
               <div className="portrait-face portrait-back">
                 <img src="/content/hoverphoto.png" alt="Madeswaran JV Avatar" />
               </div>
             </div>
           </div>
-          <p className="portrait-caption">CS ENGINEERING / AI SYSTEMS</p>
+          <motion.p
+            className="portrait-caption"
+            initial={{ opacity: 0, y: 35, scale: 0.85 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, delay: 2.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            CS ENGINEERING / AI SYSTEMS
+          </motion.p>
         </motion.div>
       </section>
 
@@ -1018,24 +1369,25 @@ function App() {
               </div>
               <div className="company-solo-meta">
                 <div className="company-title-line">
-                  <h3>Software &amp; AI Developer Intern</h3>
-                  <span className="exp-duration-badge">Jun 2026 &ndash; Jul 2026 (1- Month)</span>
+                  <h3>Digital Engineer Trainee &ndash; (Stipend)</h3>
+                  <span className="exp-duration-badge">Jun 2026 &ndash; Jul 2026</span>
                 </div>
                 <h4 className="company-name">IdentifYou Technologies Private Ltd</h4>
+                <p className="company-location">Madurai, Tamil Nadu</p>
               </div>
             </div>
             <div className="experience-entry-body">
               <ul className="exp-bullets-list">
-                <li>Architected full-stack features and AI middleware capabilities for production web applications.</li>
-                <li>Implemented REST APIs and optimized responsive front-end components using React &amp; Node.js.</li>
-                <li>Collaborated on real-time data integration and system performance improvements.</li>
+                <li>Worked on real–world software development tasks alongside the engineering team during the internship.</li>
+                <li>Developed a module with React.js (Frontend), Express.js (Backend), MySQL (Database).</li>
+                <li>Had a good experience on real-time debugging business logic errors.</li>
               </ul>
               <div className="exp-tech-chips">
-                <span>React</span>
-                <span>Node.js</span>
-                <span>AI Agents</span>
-                <span>REST APIs</span>
-                <span>JavaScript</span>
+                <span>React.js</span>
+                <span>Express.js</span>
+                <span>MySQL</span>
+                <span>Full-Stack</span>
+                <span>Debugging</span>
               </div>
             </div>
 
@@ -1137,6 +1489,7 @@ function App() {
                 onOpenLightbox={(proj, imgIdx) =>
                   setLightboxState({ isOpen: true, project: proj, initialIndex: imgIdx })
                 }
+                onOpenDetails={(proj) => setActiveProjectDetails(proj)}
               />
             ))}
           </motion.div>
@@ -1160,6 +1513,7 @@ function App() {
                 onOpenLightbox={(proj, imgIdx) =>
                   setLightboxState({ isOpen: true, project: proj, initialIndex: imgIdx })
                 }
+                onOpenDetails={(proj) => setActiveProjectDetails(proj)}
               />
             ))}
             <motion.div
@@ -1179,6 +1533,13 @@ function App() {
           project={lightboxState.project}
           initialIndex={lightboxState.initialIndex}
           onClose={() => setLightboxState({ isOpen: false, project: null, initialIndex: 0 })}
+        />
+      )}
+
+      {activeProjectDetails && (
+        <ProjectDetailsModal
+          project={activeProjectDetails}
+          onClose={() => setActiveProjectDetails(null)}
         />
       )}
 
