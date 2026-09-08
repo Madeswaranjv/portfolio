@@ -3,10 +3,12 @@ import {
   Activity,
   ArrowUpRight,
   Award,
+  Binary,
   BookOpen,
   Bot,
   Braces,
   Briefcase,
+  Bug,
   ChevronLeft,
   ChevronRight,
   Cloud,
@@ -22,28 +24,39 @@ import {
   Maximize2,
   Menu,
   Moon,
+  Network,
   Pause,
   Play,
   Server,
+  ShieldCheck,
   Sun,
+  Terminal,
   User,
+  Workflow,
   X,
   Zap,
 } from 'lucide-react'
-import { FaAws, FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6'
+import { FaAws, FaCss3Alt, FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6'
 import {
   SiCplusplus,
   SiExpress,
+  SiFastapi,
   SiGit,
   SiJavascript,
   SiMongodb,
+  SiMysql,
   SiNextdotjs,
   SiNodedotjs,
   SiPython,
+  SiPytorch,
   SiReact,
+  SiRust,
   SiTailwindcss,
   SiTypescript,
+  SiVercel,
+  SiVite,
 } from 'react-icons/si'
+import { RiOpenaiFill } from 'react-icons/ri'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import MagnificationDock from './components/MagnificationDock'
@@ -77,6 +90,7 @@ const certificates = [
     date: '2026',
     icon: Cloud,
     className: 'aws-cert',
+    file: '/certificates/aws-cloud practioner.pdf',
   },
   {
     name: 'AWS Cloud Foundations',
@@ -624,6 +638,73 @@ function ProjectLightboxModal({ project, initialIndex = 0, onClose }) {
   )
 }
 
+function renderTechIcon(tech) {
+  const normalized = tech.toLowerCase().trim()
+
+  if (normalized.includes('react')) return <SiReact aria-hidden="true" />
+  if (normalized.includes('vite')) return <SiVite aria-hidden="true" />
+  if (normalized.includes('fastapi')) return <SiFastapi aria-hidden="true" />
+  if (normalized.includes('python')) return <SiPython aria-hidden="true" />
+  if (normalized.includes('chromadb') || normalized.includes('chroma')) {
+    return (
+      <svg viewBox="0 0 222 142" width="16" height="16" fill="currentColor" aria-hidden="true">
+        <g transform="matrix(0.8644,0,0,0.8644,17.35,-11.81)">
+          <ellipse fill="#ffde2d" cx="170.67" cy="81.92" rx="85.33" ry="81.92" />
+          <ellipse fill="#327eff" cx="85.33" cy="81.92" rx="85.33" ry="81.92" />
+          <path d="M170.67 81.92c0 45.24-38.21 81.92-85.33 81.92V81.92h85.33zm-85.34 0c0-45.24 38.21-81.92 85.34-81.92v81.92H85.33z" fill="#ff6446" />
+        </g>
+      </svg>
+    )
+  }
+  if (normalized.includes('zustand')) {
+    return (
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="12" cy="13" r="8" />
+        <path d="M5 6a3 3 0 0 1 3 3" />
+        <path d="M19 6a3 3 0 0 0-3 3" />
+        <circle cx="9.5" cy="11.5" r="1" fill="currentColor" />
+        <circle cx="14.5" cy="11.5" r="1" fill="currentColor" />
+        <path d="M10 15.5c.5.5 1.5 1 2 1s1.5-.5 2-1" />
+        <ellipse cx="12" cy="14.5" rx="1.5" ry="1" fill="currentColor" />
+      </svg>
+    )
+  }
+  if (normalized.includes('tavily')) {
+    return (
+      <svg viewBox="0 0 110 110" width="16" height="16" fill="currentColor" aria-hidden="true">
+        <path fillRule="evenodd" clipRule="evenodd" d="M77.07 0C88.32 0 93.95 0 98.24 2.18c3.76 1.93 6.86 4.98 8.8 8.77 2.18 4.28 2.18 9.9 2.18 21.13v44.83c0 11.23 0 16.85-2.18 21.13-1.93 3.76-4.99 6.85-8.8 8.78-4.29 2.18-9.92 2.18-21.18 2.18H32.15c-11.26 0-16.88 0-21.18-2.18-3.76-1.93-6.86-4.98-8.79-8.78C0 93.76 0 88.15 0 76.91V32.09C0 20.85 0 15.24 2.18 10.95c1.93-3.76 4.99-6.84 8.79-8.77C15.27 0 20.89 0 32.15 0h44.92zM46.43 60.24c-.6 0-1.16.1-1.72.35-.56.21-1.06.56-1.48.98l-8.58 8.6-2.29-2.28c-1.69-1.69-4.54-.84-5.06 1.48l-3.28 14.46c-.1.49-.1 1.02.04 1.51.14.49.39.95.77 1.3.35.35.81.63 1.3.77.5.14 1.02.14 1.52.04l14.42-3.27c2.32-.52 3.13-3.4 1.48-5.09l-2.29-2.28 8.58-8.6c.85-.84 1.3-2 1.3-3.2 0-1.19-.45-2.35-1.3-3.19l-.1-.1-.11-.11c-.42-.42-.91-.73-1.48-.98-.56-.21-1.12-.35-1.72-.35zm31.02-5.41c-2-1.26-4.61.18-4.61 2.57v3.23H54.42c.6 1.19.95 2.52.95 3.93 0 2.07-.74 3.93-1.94 5.4h19.38v3.23c0 2.39 2.6 3.83 4.64 2.57l12.52-7.9c.95-.6 1.41-1.58 1.41-2.56s-.46-1.97-1.41-2.57L77.45 54.83zm-30.57-34.58c-.49 0-1.02.14-1.44.39-.46.24-.81.6-.1.09 1.05L36.44 34.23c-1.27 2 .17 4.63 2.53 4.63h3.24v18.61c1.33-.88 2.95-1.41 4.68-1.41 1.72 0 3.34.53 4.68 1.41V38.86h3.23c2.4 0 3.84-2.63 2.54-4.63l-7.92-12.53c-.59-.95-1.58-1.41-2.53-1.41v-.04z" />
+      </svg>
+    )
+  }
+  if (normalized.includes('mcp')) {
+    return (
+      <svg viewBox="0 0 180 180" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="14" strokeLinecap="round" aria-hidden="true">
+        <path d="M23.6 85.3l62.6-62.6c8.6-8.7 22.7-8.7 31.3 0 8.6 8.7 8.6 22.7 0 31.3l-47.3 47.3" />
+        <path d="M70.9 100.6l46.6-46.6c8.6-8.7 22.7-8.7 31.3 0l.3.3c8.7 8.7 8.7 22.7 0 31.3l-56.6 56.6c-2.9 2.9-2.9 7.6 0 10.4l11.6 11.7" />
+        <path d="M101.9 38.3L55.6 84.6c-8.7 8.6-8.7 22.7 0 31.3 8.6 8.6 22.7 8.6 31.3 0l46.3-46.3" />
+      </svg>
+    )
+  }
+  if (normalized.includes('tool calling') || normalized.includes('llm')) return <Bot aria-hidden="true" />
+  if (normalized.includes('semantic') || normalized.includes('verification')) return <ShieldCheck aria-hidden="true" />
+  if (normalized.includes('node')) return <SiNodedotjs aria-hidden="true" />
+  if (normalized.includes('express')) return <SiExpress aria-hidden="true" />
+  if (normalized.includes('mongodb')) return <SiMongodb aria-hidden="true" />
+  if (normalized.includes('tailwind')) return <SiTailwindcss aria-hidden="true" />
+  if (normalized.includes('vercel')) return <SiVercel aria-hidden="true" />
+  if (normalized.includes('mysql')) return <SiMysql aria-hidden="true" />
+  if (normalized.includes('aws')) return <FaAws aria-hidden="true" />
+  if (normalized.includes('css')) return <FaCss3Alt aria-hidden="true" />
+  if (normalized.includes('pytorch')) return <SiPytorch aria-hidden="true" />
+  if (normalized.includes('federated') || normalized.includes('graph')) return <Network aria-hidden="true" />
+  if (normalized.includes('rust')) return <SiRust aria-hidden="true" />
+  if (normalized.includes('tree-sitter')) return <Workflow aria-hidden="true" />
+  if (normalized.includes('cli') || normalized.includes('terminal')) return <Terminal aria-hidden="true" />
+  if (normalized.includes('ast') || normalized.includes('parsing')) return <Binary aria-hidden="true" />
+
+  return <Code2 aria-hidden="true" />
+}
+
 function ProjectDetailsModal({ project, onClose }) {
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -710,7 +791,8 @@ function ProjectDetailsModal({ project, onClose }) {
                 <div className="project-modal-chips">
                   {project.techStack.map((tech) => (
                     <span key={tech} className="project-modal-chip">
-                      {tech}
+                      {renderTechIcon(tech)}
+                      <span>{tech}</span>
                     </span>
                   ))}
                 </div>
@@ -742,6 +824,134 @@ function ProjectDetailsModal({ project, onClose }) {
               <FaGithub size={15} />
               <span>View Source Code</span>
             </a>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
+function CertificateModal({ certificate, onClose }) {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
+  if (!certificate) return null
+
+  const encodedUrl = certificate.file ? encodeURI(certificate.file) : null
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="cert-modal-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="cert-modal-dialog surface-card"
+          initial={{ scale: 0.93, opacity: 0, y: 16 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.94, opacity: 0, y: 12 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="cert-modal-header">
+            <div className="cert-modal-meta">
+              <div className="cert-modal-badge-row">
+                <span className="cert-badge">{certificate.date}</span>
+              </div>
+              <h2 className="cert-modal-title">{certificate.name}</h2>
+              <p className="cert-modal-issuer">{certificate.issuer}</p>
+            </div>
+
+            <div className="cert-modal-header-actions">
+              {encodedUrl && (
+                <>
+                  <a
+                    href={encodedUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="cert-icon-btn"
+                    title="Open live certificate in new tab"
+                    aria-label="Open in new tab"
+                  >
+                    <ArrowUpRight size={17} />
+                  </a>
+                  <a
+                    href={encodedUrl}
+                    download
+                    className="cert-icon-btn"
+                    title="Download certificate PDF"
+                    aria-label="Download PDF"
+                  >
+                    <FileDown size={17} />
+                  </a>
+                </>
+              )}
+              <button
+                type="button"
+                className="cert-modal-close"
+                onClick={onClose}
+                aria-label="Close certificate viewer"
+                title="Close (Esc)"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          </div>
+
+          {/* Body / PDF Viewer */}
+          <div className="cert-modal-body">
+            {encodedUrl ? (
+              <div className="cert-preview-frame">
+                <iframe
+                  src={`${encodedUrl}#toolbar=1&navpanes=0`}
+                  title={`${certificate.name} Credential`}
+                  className="cert-iframe"
+                />
+              </div>
+            ) : (
+              <div className="cert-empty-state">
+                <p>Live credential document verification in progress.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="cert-modal-footer">
+            <span className="cert-modal-footer-caption">
+              Issued by {certificate.issuer}
+            </span>
+            <div className="cert-modal-footer-actions">
+              {encodedUrl && (
+                <>
+                  <a
+                    href={encodedUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="gold-button cert-modal-btn"
+                  >
+                    <span>Open Live Certificate</span>
+                    <ArrowUpRight size={14} />
+                  </a>
+                  <a
+                    href={encodedUrl}
+                    download
+                    className="outline-button cert-modal-btn"
+                  >
+                    <FileDown size={14} />
+                    <span>Download PDF</span>
+                  </a>
+                </>
+              )}
+            </div>
           </div>
         </motion.div>
       </motion.div>
@@ -1078,6 +1288,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [lightboxState, setLightboxState] = useState({ isOpen: false, project: null, initialIndex: 0 })
   const [activeProjectDetails, setActiveProjectDetails] = useState(null)
+  const [activeCertificate, setActiveCertificate] = useState(null)
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark'
   })
@@ -1309,7 +1520,7 @@ function App() {
               <div className="edu-badges-row">
                 <span className="edu-badge-highlight">CGPA 8.54 / 10.0</span>
                 <span className="edu-badge-normal">3rd Year &middot; Batch 2024 - 2028</span>
-                <span className="edu-badge-normal">Full-Time Campus Program</span>
+                
               </div>
 
               <div className="edu-description-block">
@@ -1322,12 +1533,30 @@ function App() {
               <div className="edu-coursework-group">
                 <p className="edu-coursework-title">Key Core Subjects &amp; Focus Areas:</p>
                 <div className="edu-chips-wrap">
-                  <span className="edu-chip-item">Artificial Intelligence &amp; Agents</span>
-                  <span className="edu-chip-item">Data Structures &amp; Algorithms</span>
-                  <span className="edu-chip-item">Database Management Systems</span>
-                  <span className="edu-chip-item">Object Oriented Programming (C++)</span>
-                  <span className="edu-chip-item">Operating Systems &amp; Networks</span>
-                  <span className="edu-chip-item">Full-Stack Web Engineering</span>
+                  <span className="edu-chip-item">
+                    <RiOpenaiFill aria-hidden="true" className="edu-chip-icon" />
+                    <span>Artificial Intelligence &amp; Agents</span>
+                  </span>
+                  <span className="edu-chip-item">
+                    <Binary aria-hidden="true" className="edu-chip-icon" />
+                    <span>Data Structures &amp; Algorithms</span>
+                  </span>
+                  <span className="edu-chip-item">
+                    <Database aria-hidden="true" className="edu-chip-icon" />
+                    <span>Database Management Systems</span>
+                  </span>
+                  <span className="edu-chip-item">
+                    <SiCplusplus aria-hidden="true" className="edu-chip-icon" />
+                    <span>Object Oriented Programming (C++)</span>
+                  </span>
+                  <span className="edu-chip-item">
+                    <Server aria-hidden="true" className="edu-chip-icon" />
+                    <span>Operating Systems &amp; Networks</span>
+                  </span>
+                  <span className="edu-chip-item">
+                    <Layers3 aria-hidden="true" className="edu-chip-icon" />
+                    <span>Full-Stack Web Engineering</span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -1398,11 +1627,26 @@ function App() {
                 <li>Had a good experience on real-time debugging business logic errors.</li>
               </ul>
               <div className="exp-tech-chips">
-                <span>React.js</span>
-                <span>Express.js</span>
-                <span>MySQL</span>
-                <span>Full-Stack</span>
-                <span>Debugging</span>
+                <span>
+                  <SiReact aria-hidden="true" />
+                  <span>React.js</span>
+                </span>
+                <span>
+                  <SiExpress aria-hidden="true" />
+                  <span>Express.js</span>
+                </span>
+                <span>
+                  <SiMysql aria-hidden="true" />
+                  <span>MySQL</span>
+                </span>
+                <span>
+                  <Layers3 aria-hidden="true" />
+                  <span>Full-Stack</span>
+                </span>
+                <span>
+                  <Bug aria-hidden="true" />
+                  <span>Debugging</span>
+                </span>
               </div>
             </div>
 
@@ -1421,7 +1665,7 @@ function App() {
               <div className="company-solo-meta text-right">
                 <div className="company-title-line flex-row-reverse">
                   <h3>Software Developer Intern</h3>
-                  <span className="exp-duration-badge">Jun 2025 &ndash; Jul 2025 (2- weeks)</span>
+                  <span className="exp-duration-badge">Jun 2025 &ndash; Jul 2025 (2 - weeks)</span>
                 </div>
                 <h4 className="company-name">Elysian Intelligence Business Solutions</h4>
               </div>
@@ -1433,11 +1677,26 @@ function App() {
                 <li>Participated in core software architecture design and cross-functional feature development.</li>
               </ul>
               <div className="exp-tech-chips flex-end">
-                <span>Full-Stack Engineering</span>
-                <span>React</span>
-                <span>Express / Node</span>
-                <span>Database Engineering</span>
-                <span>Web Performance</span>
+                <span>
+                  <Layers3 aria-hidden="true" />
+                  <span>Full-Stack Engineering</span>
+                </span>
+                <span>
+                  <SiReact aria-hidden="true" />
+                  <span>React</span>
+                </span>
+                <span>
+                  <SiNodedotjs aria-hidden="true" />
+                  <span>Express / Node</span>
+                </span>
+                <span>
+                  <Database aria-hidden="true" />
+                  <span>Database Engineering</span>
+                </span>
+                <span>
+                  <Zap aria-hidden="true" />
+                  <span>Web Performance</span>
+                </span>
               </div>
             </div>
 
@@ -1460,23 +1719,43 @@ function App() {
           whileInView="unstacked"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {certificates.map(({ name, issuer, date, icon: Icon, className }, index) => (
-            <motion.div
-              className="cert-card"
-              key={name}
-              custom={index}
-              variants={certCardStackVariants}
-            >
-              <div className={`cert-icon ${className}`}>
-                <Icon aria-hidden="true" />
-              </div>
-              <div>
-                <span className="cert-badge">{date}</span>
-                <h3>{name}</h3>
-                <p className="cert-issuer">{issuer}</p>
-              </div>
-            </motion.div>
-          ))}
+          {certificates.map((cert, index) => {
+            const { name, issuer, date, icon: Icon, className, file } = cert
+            const hasLiveCert = Boolean(file)
+            return (
+              <motion.div
+                className={`cert-card ${hasLiveCert ? 'has-live-cert' : ''}`}
+                key={name}
+                custom={index}
+                variants={certCardStackVariants}
+                onClick={() => setActiveCertificate(cert)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setActiveCertificate(cert)
+                  }
+                }}
+                title={hasLiveCert ? `Click to view live ${name} certificate` : `Click to view ${name} details`}
+              >
+                <div className={`cert-icon ${className}`}>
+                  <Icon aria-hidden="true" />
+                </div>
+                <div>
+                  <span className="cert-badge">{date}</span>
+                  <h3>{name}</h3>
+                  <p className="cert-issuer">{issuer}</p>
+                  {hasLiveCert && (
+                    <div className="cert-live-indicator">
+                      <span>Live Certificate</span>
+                      <ArrowUpRight size={11} />
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )
+          })}
         </motion.div>
       </motion.section>
 
@@ -1547,6 +1826,13 @@ function App() {
         <ProjectDetailsModal
           project={activeProjectDetails}
           onClose={() => setActiveProjectDetails(null)}
+        />
+      )}
+
+      {activeCertificate && (
+        <CertificateModal
+          certificate={activeCertificate}
+          onClose={() => setActiveCertificate(null)}
         />
       )}
 
