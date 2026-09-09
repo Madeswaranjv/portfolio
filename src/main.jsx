@@ -66,10 +66,34 @@ const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_UR
 const email = import.meta.env.VITE_CONTACT_EMAIL || 'madeswaranjv@gmail.com'
 
 const socials = [
-  { label: 'LinkedIn', icon: FaLinkedinIn, href: 'https://www.linkedin.com/in/madeswaran-j-v-4909b8325' },
-  { label: 'GitHub', icon: FaGithub, href: 'https://github.com/Madeswaranjv' },
-  { label: 'X / Twitter', icon: FaXTwitter, href: 'https://x.com/' },
-  { label: 'Instagram', icon: FaInstagram, href: 'https://www.instagram.com/topstar_gaming20/?hl=en' },
+  {
+    label: 'LinkedIn',
+    handle: 'in/madeswaranjv',
+    icon: FaLinkedinIn,
+    href: import.meta.env.VITE_LINKEDIN_URL || 'https://www.linkedin.com/in/madeswaran-j-v-4909b8325',
+    description: 'Professional Network & Experience',
+  },
+  {
+    label: 'GitHub',
+    handle: '@Madeswaranjv',
+    icon: FaGithub,
+    href: `https://github.com/${import.meta.env.VITE_GITHUB_USERNAME || 'Madeswaranjv'}`,
+    description: 'Open Source Projects & Codebase',
+  },
+  {
+    label: 'X / Twitter',
+    handle: '@Madeswaranjv',
+    icon: FaXTwitter,
+    href: 'https://x.com/',
+    description: 'Tech Thoughts & Engineering Updates',
+  },
+  {
+    label: 'Instagram',
+    handle: '@topstar_gaming20',
+    icon: FaInstagram,
+    href: 'https://www.instagram.com/topstar_gaming20/?hl=en',
+    description: 'Personal Highlights & Creative Work',
+  },
 ]
 
 const navItems = [
@@ -1840,52 +1864,39 @@ function App() {
         <div className="contact-card">
           <div className="contact-info">
             <h2>Let&apos;s build something <em>considered.</em></h2>
+            <p className="contact-description">
+              Have an idea, project, or an opportunity you&apos;d like to discuss? Reach out directly via email or connect with me across my social profiles.
+            </p>
             <a className="email-link" href={`mailto:${email}`}><Mail aria-hidden="true" /> {email}</a>
-            <SocialLinks className="contact-socials" />
           </div>
 
-          <div className="contact-illustration" aria-hidden="true">
-            <div className="contact-halo halo-primary" />
-            <div className="contact-halo halo-secondary" />
-
-            <div className="illustration-card main-code-card">
-              <div className="card-header-bar">
-                <span className="dot red" />
-                <span className="dot yellow" />
-                <span className="dot green" />
-                <span className="card-title">veridic_engine.cpp</span>
-              </div>
-              <div className="card-code-body">
-                <p><span className="code-keyword">#include</span> &lt;<span className="code-str">memory</span>&gt;</p>
-                <p><span className="code-keyword">#include</span> <span className="code-str">&quot;agent_trust.hpp&quot;</span></p>
-                <p><span className="code-keyword">auto</span> <span className="code-var">agent</span> = <span className="code-class">std</span>::<span className="code-fn">make_unique</span>&lt;<span className="code-class">AgentTrustSystem</span>&gt;();</p>
-                <p><span className="code-var">agent</span>-&gt;<span className="code-fn">verifyGrounding</span>(<span className="code-str">&quot;SECURE&quot;</span>);</p>
-              </div>
+          <div className="contact-social-showcase">
+            <div className="contact-social-list">
+              {socials.map(({ label, handle, description, icon: Icon, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="contact-social-card"
+                  aria-label={`${label} profile (${handle})`}
+                >
+                  <div className="contact-social-icon-wrapper">
+                    <Icon aria-hidden="true" />
+                  </div>
+                  <div className="contact-social-content">
+                    <div className="contact-social-title-line">
+                      <span className="contact-social-name">{label}</span>
+                      <span className="contact-social-handle">{handle}</span>
+                    </div>
+                    <span className="contact-social-desc">{description}</span>
+                  </div>
+                  <div className="contact-social-arrow" aria-hidden="true">
+                    <ArrowUpRight />
+                  </div>
+                </a>
+              ))}
             </div>
-
-            <motion.div
-              className="illustration-badge float-badge-one"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <Bot className="badge-icon" />
-              <div>
-                <strong>AI Systems &amp; Agents</strong>
-                <span>MCP &amp; Middleware</span>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="illustration-badge float-badge-two"
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-            >
-              <Braces className="badge-icon" />
-              <div>
-                <strong>Full-Stack Engineering</strong>
-                <span>Node.js &middot; React &middot; AWS</span>
-              </div>
-            </motion.div>
           </div>
         </div>
       </motion.section>
