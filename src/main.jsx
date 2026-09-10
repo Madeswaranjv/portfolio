@@ -1380,11 +1380,23 @@ function App() {
     ]
   }, [activeSection, theme])
 
+  const profileVideoRef = useRef(null)
+
   useEffect(() => {
     if (isLoading) {
       document.body.style.overflow = 'hidden'
     } else {
       document.body.style.overflow = 'auto'
+    }
+  }, [isLoading])
+
+  useEffect(() => {
+    if (profileVideoRef.current) {
+      profileVideoRef.current.defaultMuted = true
+      profileVideoRef.current.muted = true
+      profileVideoRef.current.play().catch(() => {
+        // Autoplay policy prevented immediate playback; poster will render cleanly
+      })
     }
   }, [isLoading])
 
@@ -1492,14 +1504,16 @@ function App() {
             <div className="portrait-card-3d">
               <div className="portrait-face portrait-front">
                 <video
+                  ref={profileVideoRef}
                   autoPlay
                   muted
                   playsInline
-                  poster="/content/myphoto.png"
+                  poster="/content/photo.png"
                   className="profile-smile-video"
                 >
+                  <source src="/content/profile_smile.webm" type="video/webm" />
                   <source src="/content/profile_smile.mp4" type="video/mp4" />
-                  <img src="/content/profile_smile.gif" alt="Madeswaran JV" />
+                  <img src="/content/photo.png" alt="Madeswaran JV" />
                 </video>
               </div>
               <div className="portrait-face portrait-back">
