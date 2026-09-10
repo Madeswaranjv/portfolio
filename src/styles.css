@@ -1837,6 +1837,189 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   }
 }
 
+/* ============================================================
+   FLIP LINKS COMPONENT STYLES
+   ============================================================ */
+.flip-link-item {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  line-height: 0.85;
+}
+
+.flip-link-item .flip-link-front {
+  display: flex;
+  color: var(--text-heading);
+  transition: color 0.25s ease;
+}
+
+.flip-link-item .flip-link-front span {
+  display: inline-block;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flip-link-item:hover .flip-link-front span,
+.flip-link-card-row:hover .flip-link-item .flip-link-front span {
+  transform: translateY(-115%);
+}
+
+.flip-link-item .flip-link-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  color: var(--gold);
+}
+
+.flip-link-item .flip-link-back span {
+  display: inline-block;
+  transform: translateY(115%);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flip-link-item:hover .flip-link-back span,
+.flip-link-card-row:hover .flip-link-item .flip-link-back span {
+  transform: translateY(0);
+}
+
+/* Tailwind class fallback compatibility */
+.flip-link-front span {
+  transform: translateY(0);
+}
+.flip-link-back span {
+  transform: translateY(115%);
+}
+
+/* Contact Showcase Flip Links */
+.flip-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.flip-link-card-row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1rem 1.35rem;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.flip-link-card-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--gold);
+  opacity: 0;
+  transform: scaleY(0);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.flip-link-card-row:hover {
+  background: rgba(200, 164, 90, 0.07);
+  border-color: var(--gold);
+  transform: translateX(5px);
+  box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] .flip-link-card-row:hover {
+  background: rgba(179, 137, 56, 0.08);
+  box-shadow: 0 10px 22px -8px rgba(179, 137, 56, 0.2);
+}
+
+.flip-link-card-row:hover::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.flip-link-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.flip-link-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+
+.flip-link-icon-wrap svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.flip-link-handle {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.76rem;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+}
+
+.flip-link-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.contact-flip-link {
+  font-size: clamp(1.6rem, 2.5vw, 2.3rem) !important;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.flip-link-arrow-btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(200, 164, 90, 0.1);
+  border: 1px solid rgba(200, 164, 90, 0.25);
+  color: var(--gold-light);
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.flip-link-arrow-btn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: transform 0.25s ease;
+}
+
+.flip-link-card-row:hover .flip-link-arrow-btn {
+  background: var(--gold);
+  color: #121212;
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(200, 164, 90, 0.4);
+}
+
+[data-theme="light"] .flip-link-card-row:hover .flip-link-arrow-btn {
+  background: var(--gold);
+  color: #ffffff;
+}
+
+.flip-link-card-row:hover .flip-link-arrow-btn svg {
+  transform: translate(2px, -2px);
+}
+
 .site-footer { min-height: 6.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-top: 1px solid var(--surface-border); color: var(--text-muted); font-size: .68rem; }.site-footer p { margin: 0; }.site-footer span { color: var(--text-heading); font-weight: 700; }
 
 @media (max-width: 850px) {

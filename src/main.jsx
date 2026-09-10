@@ -60,6 +60,7 @@ import { RiOpenaiFill } from 'react-icons/ri'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import MagnificationDock from './components/MagnificationDock'
+import { FlipLink } from '@/components/ui/flip-links'
 import './styles.css'
 
 const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || ''
@@ -1871,30 +1872,33 @@ function App() {
           </div>
 
           <div className="contact-social-showcase">
-            <div className="contact-social-list">
-              {socials.map(({ label, handle, description, icon: Icon, href }) => (
-                <a
+            <div className="flip-links-list">
+              {socials.map(({ label, handle, icon: Icon, href }) => (
+                <div
                   key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="contact-social-card"
-                  aria-label={`${label} profile (${handle})`}
+                  className="flip-link-card-row"
                 >
-                  <div className="contact-social-icon-wrapper">
-                    <Icon aria-hidden="true" />
-                  </div>
-                  <div className="contact-social-content">
-                    <div className="contact-social-title-line">
-                      <span className="contact-social-name">{label}</span>
-                      <span className="contact-social-handle">{handle}</span>
+                  <div className="flip-link-header">
+                    <div className="flip-link-icon-wrap" aria-hidden="true">
+                      <Icon />
                     </div>
-                    <span className="contact-social-desc">{description}</span>
+                    <span className="flip-link-handle">{handle}</span>
                   </div>
-                  <div className="contact-social-arrow" aria-hidden="true">
-                    <ArrowUpRight />
+                  <div className="flip-link-action-row">
+                    <FlipLink href={href} className="contact-flip-link">
+                      {label}
+                    </FlipLink>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flip-link-arrow-btn"
+                      aria-label={`Open ${label} profile`}
+                    >
+                      <ArrowUpRight aria-hidden="true" />
+                    </a>
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           </div>
