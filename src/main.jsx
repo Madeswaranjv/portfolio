@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Activity,
+  AlertTriangle,
   ArrowUpRight,
   Award,
   Binary,
@@ -9,16 +10,22 @@ import {
   Braces,
   Briefcase,
   Bug,
+  ChefHat,
   ChevronLeft,
   ChevronRight,
   Cloud,
   Code2,
   Cpu,
+  CreditCard,
   Database,
   FileDown,
+  FileText,
   Folder,
   GitBranch,
+  Globe,
+  Grid,
   Home,
+  KeyRound,
   Layers3,
   Mail,
   Maximize2,
@@ -29,9 +36,14 @@ import {
   Play,
   Server,
   ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Stethoscope,
   Sun,
   Terminal,
   User,
+  UserCheck,
+  Utensils,
   Workflow,
   X,
   Zap,
@@ -61,6 +73,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import MagnificationDock from './components/MagnificationDock'
 import { FlipLink } from '@/components/ui/flip-links'
+import { ExpandingCards } from '@/components/ui/expanding-cards'
+import Lenis from 'lenis'
+import 'lenis/dist/lenis.css'
 import './styles.css'
 
 const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || ''
@@ -195,6 +210,12 @@ const skills = [
   { name: 'AWS', icon: FaAws, className: 'aws' },
 ]
 
+const skillRows = [
+  skills.slice(0, 4), // Row 1: React, JavaScript, TypeScript, Node.js
+  skills.slice(4, 8), // Row 2: Express, MongoDB, C++, Python
+  skills.slice(8, 12), // Row 3: Git, Tailwind CSS, Next.js, AWS
+]
+
 const developmentProjects = [
   {
     name: 'Veridic',
@@ -210,6 +231,46 @@ const developmentProjects = [
     className: 'veridic',
     mark: 'V',
     github: 'https://github.com/Madeswaranjv',
+    showcaseItems: [
+      {
+        id: 'v-safety',
+        title: 'Safety Guard',
+        description: 'Semantic safety boundaries intercepting LLM payloads.',
+        imgSrc: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
+        icon: <ShieldCheck size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv',
+      },
+      {
+        id: 'v-mcp',
+        title: 'MCP Intercept',
+        description: 'Execution interceptor for Model Context Protocol clients.',
+        imgSrc: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&auto=format&fit=crop&q=80',
+        icon: <Bot size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv',
+      },
+      {
+        id: 'v-solver',
+        title: 'Constraint AI',
+        description: 'Dynamic solver preventing prompt injection attacks.',
+        imgSrc: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80',
+        icon: <Network size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv',
+      },
+      {
+        id: 'v-audit',
+        title: 'Audit Engine',
+        description: 'Automated state rollback triggers & audit logging.',
+        imgSrc: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80',
+        icon: <Activity size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv',
+      },
+    ],
+    images: [
+      { url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=85', caption: 'Veridic — Semantic Grounding Middleware' },
+      { url: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=1200&auto=format&fit=crop&q=85', caption: 'Veridic — MCP Tool Interceptor Interface' },
+      { url: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&auto=format&fit=crop&q=85', caption: 'Veridic — Heuristic Safety Graph & Constraint Verification' },
+      { url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=85', caption: 'Veridic — Telemetry & Automated Rollback Triggers' },
+    ],
   },
   {
     name: 'FlavourDash',
@@ -226,6 +287,40 @@ const developmentProjects = [
     mark: 'FD',
     github: 'https://github.com/Madeswaranjv/RestaurantOrdering.git',
     liveUrl: 'https://restaurant-ordering-zeta.vercel.app/',
+    showcaseItems: [
+      {
+        id: 'fd-storefront',
+        title: 'Storefront',
+        description: 'Luxury Gastronomy Storefront & Hero Landing Experience.',
+        imgSrc: '/content/flavordash/flavordash-1.png',
+        icon: <Utensils size={18} />,
+        linkHref: 'https://restaurant-ordering-zeta.vercel.app/',
+      },
+      {
+        id: 'fd-menu',
+        title: 'AI Menu',
+        description: 'Curated Masterpieces Menu & AI Culinary Planner.',
+        imgSrc: '/content/flavordash/flavordash-2.png',
+        icon: <ChefHat size={18} />,
+        linkHref: 'https://restaurant-ordering-zeta.vercel.app/',
+      },
+      {
+        id: 'fd-bag',
+        title: 'Checkout',
+        description: 'Culinary Bag & White-Glove Digital Invoice.',
+        imgSrc: '/content/flavordash/flavordash-3.png',
+        icon: <ShoppingBag size={18} />,
+        linkHref: 'https://restaurant-ordering-zeta.vercel.app/',
+      },
+      {
+        id: 'fd-auth',
+        title: 'Profile',
+        description: 'User Authentication & Culinary Profile Access.',
+        imgSrc: '/content/flavordash/flavordash-4.png',
+        icon: <UserCheck size={18} />,
+        linkHref: 'https://restaurant-ordering-zeta.vercel.app/',
+      },
+    ],
     images: [
       {
         url: '/content/flavordash/flavordash-1.png',
@@ -260,6 +355,40 @@ const developmentProjects = [
     mark: 'HX',
     logo: '/content/healix/healix-logo.png',
     github: 'https://github.com/Madeswaranjv/Healix.git',
+    showcaseItems: [
+      {
+        id: 'hx-assistant',
+        title: 'Assistant',
+        description: 'Streaming clinical assistant & query reasoning.',
+        imgSrc: '/content/healix/healix-1.png',
+        icon: <Stethoscope size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv/Healix.git',
+      },
+      {
+        id: 'hx-evidence',
+        title: 'Evidence',
+        description: 'Structured clinical evidence & RAG citations.',
+        imgSrc: '/content/healix/healix-2.png',
+        icon: <FileText size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv/Healix.git',
+      },
+      {
+        id: 'hx-triage',
+        title: 'Triage',
+        description: 'Emergency symptom triage with CDC guidelines.',
+        imgSrc: '/content/healix/healix-3.png',
+        icon: <AlertTriangle size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv/Healix.git',
+      },
+      {
+        id: 'hx-risk',
+        title: 'Epidemiology',
+        description: 'Epidemiological risk modeling & WHO analysis.',
+        imgSrc: '/content/healix/healix-4.png',
+        icon: <Globe size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv/Healix.git',
+      },
+    ],
     images: [
       {
         url: '/content/healix/healix-1.png',
@@ -295,6 +424,40 @@ const developmentProjects = [
     logo: '/content/craftywrap/craftywrap-logo.png',
     github: 'https://github.com/Madeswaranjv/CraftyWrap.git',
     liveUrl: 'https://craftywrap.com',
+    showcaseItems: [
+      {
+        id: 'cw-storefront',
+        title: 'Artisanal',
+        description: 'Handcrafted yarn dolls hero storefront.',
+        imgSrc: '/content/craftywrap/craftywrap-hero.png',
+        icon: <ShoppingBag size={18} />,
+        linkHref: 'https://craftywrap.com',
+      },
+      {
+        id: 'cw-collections',
+        title: 'Collections',
+        description: 'Filterable yarn collection & product grid.',
+        imgSrc: '/content/craftywrap/craftywrap-collections.png',
+        icon: <Grid size={18} />,
+        linkHref: 'https://craftywrap.com',
+      },
+      {
+        id: 'cw-auth',
+        title: 'OAuth',
+        description: 'Secure customer login & session modal.',
+        imgSrc: '/content/craftywrap/craftywrap-3.png',
+        icon: <KeyRound size={18} />,
+        linkHref: 'https://craftywrap.com',
+      },
+      {
+        id: 'cw-checkout',
+        title: 'Checkout',
+        description: 'Complete checkout & Razorpay payment gateway.',
+        imgSrc: '/content/craftywrap/craftywrap-checkout.png',
+        icon: <CreditCard size={18} />,
+        linkHref: 'https://craftywrap.com',
+      },
+    ],
     images: [
       {
         url: '/content/craftywrap/craftywrap-hero.png',
@@ -331,6 +494,37 @@ const otherProjects = [
     className: 'fedderm',
     mark: 'FG',
     github: 'https://github.com/Madeswaranjv',
+    showcaseItems: [
+      {
+        id: 'fg-fed',
+        title: 'Federated',
+        description: 'Decentralized clinical node training without raw data transfer.',
+        imgSrc: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop&q=80',
+        icon: <Network size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv',
+      },
+      {
+        id: 'fg-gnn',
+        title: 'Patient GNN',
+        description: 'Patient-similarity graphs preserving clinical data sovereignty.',
+        imgSrc: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=800&auto=format&fit=crop&q=80',
+        icon: <Binary size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv',
+      },
+      {
+        id: 'fg-privacy',
+        title: 'Privacy',
+        description: 'Differential privacy mechanisms against model inversion attacks.',
+        imgSrc: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=800&auto=format&fit=crop&q=80',
+        icon: <ShieldCheck size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv',
+      },
+    ],
+    images: [
+      { url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&auto=format&fit=crop&q=85', caption: 'FedDermGNN — Federated Distributed Clinical Nodes' },
+      { url: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=1200&auto=format&fit=crop&q=85', caption: 'FedDermGNN — Patient-Similarity Graph Neural Networks' },
+      { url: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=1200&auto=format&fit=crop&q=85', caption: 'FedDermGNN — Dermatological AI Diagnosis & Privacy Rails' },
+    ],
   },
   {
     name: 'Ultra',
@@ -346,6 +540,37 @@ const otherProjects = [
     className: 'ultra',
     mark: 'ULT',
     github: 'https://github.com/Madeswaranjv/UltraAI-Native-Operatingshell.git',
+    showcaseItems: [
+      {
+        id: 'ult-ast',
+        title: 'AST Parser',
+        description: 'Tree-sitter AST syntax parser generating code structural graphs.',
+        imgSrc: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80',
+        icon: <Workflow size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv/UltraAI-Native-Operatingshell.git',
+      },
+      {
+        id: 'ult-parallel',
+        title: 'Parallel Scan',
+        description: 'Sub-second multi-threaded worker pools and indexing.',
+        imgSrc: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=80',
+        icon: <Cpu size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv/UltraAI-Native-Operatingshell.git',
+      },
+      {
+        id: 'ult-shell',
+        title: 'AI Shell',
+        description: 'Terminal-first developer environment with contextual prompt piping.',
+        imgSrc: 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=800&auto=format&fit=crop&q=80',
+        icon: <Terminal size={18} />,
+        linkHref: 'https://github.com/Madeswaranjv/UltraAI-Native-Operatingshell.git',
+      },
+    ],
+    images: [
+      { url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&auto=format&fit=crop&q=85', caption: 'Ultra — Tree-sitter Codebase AST Graph Parsing' },
+      { url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=85', caption: 'Ultra — High-Throughput Multi-Threaded Code Indexing' },
+      { url: 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=1200&auto=format&fit=crop&q=85', caption: 'Ultra — AI-Native Shell Terminal Interface' },
+    ],
   },
 ]
 
@@ -357,24 +582,18 @@ const sectionMotion = {
 }
 
 const skillCardStackVariants = {
-  stacked: (index) => ({
-    x: `calc(${(11 - index)} * (100% + 0.45rem))`,
-    y: (11 - index) * -2,
-    rotate: (11 - index) * 1.5,
-    scale: 1 - (11 - index) * 0.012,
-    zIndex: index + 1,
-    opacity: index === 11 ? 1 : 0.88,
-  }),
+  stacked: {
+    opacity: 0,
+    y: 24,
+    scale: 0.96,
+  },
   unstacked: (index) => ({
-    x: 0,
-    y: 0,
-    rotate: 0,
-    scale: 1,
-    zIndex: 1,
     opacity: 1,
+    y: 0,
+    scale: 1,
     transition: {
-      duration: 0.75,
-      delay: (11 - index) * 0.045,
+      duration: 0.6,
+      delay: Math.floor(index / 4) * 0.12 + (index % 4) * 0.035,
       ease: [0.16, 1, 0.3, 1],
     },
   }),
@@ -754,16 +973,19 @@ function ProjectDetailsModal({ project, onClose }) {
         onClick={onClose}
       >
         <motion.div
-          className="project-modal-dialog surface-card"
-          initial={{ scale: 0.92, opacity: 0, y: 20 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.94, opacity: 0, y: 15 }}
-          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          className="project-modal-dialog surface-card project-modal-bottom-sheet"
+          initial={{ y: '100%' }}
+          animate={{ y: 0 }}
+          exit={{ y: '100%' }}
+          transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
           onClick={(e) => e.stopPropagation()}
         >
+          {/* Top handle pill for bottom sheet */}
+          <div className="project-modal-drag-pill" />
+
           {/* Modal Header */}
           <div className="project-modal-header">
-            <div>
+            <div className="project-modal-header-centered">
               <span className="project-modal-eyebrow">{project.type}</span>
               <div className="project-modal-title-row">
                 <div className={`project-modal-mark ${project.className} ${project.logo ? 'has-custom-logo' : ''}`}>
@@ -985,7 +1207,15 @@ function CertificateModal({ certificate, onClose }) {
 }
 
 function ProjectCard({ project, index = 0, onOpenLightbox, onOpenDetails }) {
-  const hasImages = project.images && project.images.length > 0
+  const showcaseItems = project.showcaseItems || (project.images ? project.images.map((img, i) => ({
+    id: `${project.name}-${i}`,
+    title: img.caption ? img.caption.split('—')[0].trim().split(' ')[0] : `Slide ${i + 1}`,
+    description: img.caption || project.description,
+    imgSrc: img.url,
+    icon: <Sparkles size={18} />,
+    linkHref: project.liveUrl || project.github || '#',
+  })) : [])
+  const hasShowcase = showcaseItems.length > 0
   const githubUrl = project.github || 'https://github.com/Madeswaranjv'
   const liveUrl = project.liveUrl || project.live || project.url || null
 
@@ -995,13 +1225,19 @@ function ProjectCard({ project, index = 0, onOpenLightbox, onOpenDetails }) {
       custom={index}
       variants={projectCardStackVariants}
     >
-      {hasImages ? (
-        <ProjectImageSlideshow
-          images={project.images}
-          projectMark={project.mark}
-          className={project.className}
-          onOpenLightbox={(imgIndex) => onOpenLightbox && onOpenLightbox(project, imgIndex)}
-        />
+      {hasShowcase ? (
+        <div className="project-visual-expanding">
+          <ExpandingCards
+            items={showcaseItems}
+            defaultActiveIndex={0}
+            direction="horizontal"
+            onItemClick={(item, itemIdx) => {
+              if (onOpenLightbox) {
+                onOpenLightbox(project, itemIdx)
+              }
+            }}
+          />
+        </div>
       ) : (
         <div className={`project-visual ${project.className}`}>
           <span className="project-grid" />
@@ -1309,6 +1545,32 @@ function ScrambleWord({ word, className, baseDelay = 150, duration = 2400 }) {
   )
 }
 
+function SkillsRow({ rowSkills, rowIndex, initialActiveIndex = 0 }) {
+  const [activeIdx, setActiveIdx] = useState(initialActiveIndex)
+
+  return (
+    <div className="skills-row">
+      {rowSkills.map(({ name, icon: Icon, className }, colIndex) => {
+        const globalIndex = rowIndex * 4 + colIndex
+        const isActive = activeIdx === colIndex
+        return (
+          <motion.div
+            key={name}
+            className={`skill-card ${isActive ? 'is-active' : ''}`}
+            onMouseEnter={() => setActiveIdx(colIndex)}
+            onClick={() => setActiveIdx(colIndex)}
+            custom={globalIndex}
+            variants={skillCardStackVariants}
+          >
+            <div className={`skill-icon ${className}`}><Icon aria-hidden="true" /></div>
+            <span className="skill-name">{name}</span>
+          </motion.div>
+        )
+      })}
+    </div>
+  )
+}
+
 function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [lightboxState, setLightboxState] = useState({ isOpen: false, project: null, initialIndex: 0 })
@@ -1326,6 +1588,80 @@ function App() {
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
+
+  const lenisRef = useRef(null)
+
+  // Initialize Lenis for smooth, cinematic, slightly slower page scrolling
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.6, // Longer duration gives a smoother, slower momentum glide
+      wheelMultiplier: 0.8, // Slightly lower distance per wheel tick for deliberate, silky scrolling
+      touchMultiplier: 1.2,
+      smoothWheel: true,
+      infinite: false,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    })
+
+    lenisRef.current = lenis
+    window.__lenis = lenis
+
+    let animationFrameId
+    function raf(time) {
+      lenis.raf(time)
+      animationFrameId = requestAnimationFrame(raf)
+    }
+    animationFrameId = requestAnimationFrame(raf)
+
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+      lenis.destroy()
+      window.__lenis = null
+      lenisRef.current = null
+    }
+  }, [])
+
+  // Pause background scroll when any modal or drawer is active
+  useEffect(() => {
+    if (!lenisRef.current) return
+    const isModalOpen =
+      isLoading ||
+      Boolean(activeProjectDetails) ||
+      Boolean(activeCertificate) ||
+      lightboxState.isOpen
+
+    if (isModalOpen) {
+      lenisRef.current.stop()
+      document.body.style.overflow = 'hidden'
+    } else {
+      lenisRef.current.start()
+      document.body.style.overflow = 'auto'
+    }
+  }, [isLoading, activeProjectDetails, activeCertificate, lightboxState.isOpen])
+
+  // Handle all internal anchor clicks (#contact, #projects, etc.) with Lenis smooth scroll
+  useEffect(() => {
+    const handleAnchorClick = (e) => {
+      const anchor = e.target.closest('a[href^="#"]')
+      if (!anchor) return
+      const href = anchor.getAttribute('href')
+      if (!href || href === '#' || href.length <= 1) return
+
+      const targetId = href.slice(1)
+      const targetEl = document.getElementById(targetId)
+      if (targetEl && window.__lenis) {
+        e.preventDefault()
+        window.__lenis.scrollTo(targetEl, {
+          offset: -30,
+          duration: 1.6,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        })
+        window.history.pushState(null, '', href)
+      }
+    }
+
+    document.addEventListener('click', handleAnchorClick)
+    return () => document.removeEventListener('click', handleAnchorClick)
+  }, [])
 
   const [activeSection, setActiveSection] = useState('home')
 
@@ -1346,8 +1682,16 @@ function App() {
       }
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
+    if (lenisRef.current) {
+      lenisRef.current.on('scroll', handleScroll)
+    }
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (lenisRef.current) {
+        lenisRef.current.off('scroll', handleScroll)
+      }
+    }
   }, [])
 
   const dockItems = useMemo(() => {
@@ -1381,14 +1725,6 @@ function App() {
   }, [activeSection, theme])
 
   const profileVideoRef = useRef(null)
-
-  useEffect(() => {
-    if (isLoading) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-  }, [isLoading])
 
   useEffect(() => {
     if (profileVideoRef.current) {
@@ -1427,7 +1763,7 @@ function App() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span /> Available for meaningful work
+            
           </motion.p>
 
           <motion.h1 className="hero-title-animated">
@@ -1441,8 +1777,7 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            Third-year CS Engineering student building AI agents and full-stack systems — from
-            semantic-grounding middleware for MCP tools to production-style ordering platforms.
+            
           </motion.p>
           
           <motion.div
@@ -1624,16 +1959,13 @@ function App() {
           whileInView="unstacked"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {skills.map(({ name, icon: Icon, className }, index) => (
-            <motion.div
-              className="skill-card"
-              key={name}
-              custom={index}
-              variants={skillCardStackVariants}
-            >
-              <div className={`skill-icon ${className}`}><Icon aria-hidden="true" /></div>
-              <span>{name}</span>
-            </motion.div>
+          {skillRows.map((row, rIdx) => (
+            <SkillsRow
+              key={rIdx}
+              rowSkills={row}
+              rowIndex={rIdx}
+              initialActiveIndex={rIdx % 4}
+            />
           ))}
         </motion.div>
       </motion.section>

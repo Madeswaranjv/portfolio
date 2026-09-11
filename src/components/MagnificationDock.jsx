@@ -52,7 +52,15 @@ function DockItem({
       const targetId = href.replace('#', '')
       const targetEl = document.getElementById(targetId)
       if (targetEl) {
-        targetEl.scrollIntoView({ behavior: 'smooth' })
+        if (window.__lenis) {
+          window.__lenis.scrollTo(targetEl, {
+            offset: -30,
+            duration: 1.6,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          })
+        } else {
+          targetEl.scrollIntoView({ behavior: 'smooth' })
+        }
         window.history.pushState(null, '', href)
       }
     }
