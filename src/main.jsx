@@ -111,9 +111,9 @@ const socials = [
   },
   {
     label: 'Instagram',
-    handle: '@topstar_gaming20',
+    handle: '@_._mades_._',
     icon: FaInstagram,
-    href: 'https://www.instagram.com/topstar_gaming20/?hl=en',
+    href: 'https://www.instagram.com/_._mades_._/',
     description: 'Personal Highlights & Creative Work',
   },
 ]
