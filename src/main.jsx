@@ -37,6 +37,7 @@ import {
   Network,
   Pause,
   Play,
+  RotateCcw,
   Server,
   ShieldCheck,
   ShoppingBag,
@@ -77,6 +78,7 @@ import { createRoot } from 'react-dom/client'
 import MagnificationDock from './components/MagnificationDock'
 import { FlipLink } from '@/components/ui/flip-links'
 import { ExpandingCards } from '@/components/ui/expanding-cards'
+import { FlippingCard } from '@/components/ui/flipping-card'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import './styles.css'
@@ -1531,41 +1533,56 @@ function AboutPassageReader({ text }) {
   )
 }
 
-function IdentifYouIllustration() {
-  return (
-    <motion.div
-      className="exp-illustration-card exp-illustration-right exp-diagram-widget"
-      animate={{ y: [0, -6, 0] }}
-      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-    >
-      <div className="stock-illustration-container">
-        <img
-          src="/content/developer_stock_illustration.png"
-          alt="Developer at computer desk illustration"
-          className="stock-illustration-img"
-        />
-      </div>
-    </motion.div>
-  )
-}
-
-function ElysianIllustration() {
-  return (
-    <motion.div
-      className="exp-illustration-card exp-illustration-left exp-diagram-widget"
-      animate={{ y: [0, 6, 0] }}
-      transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-    >
-      <div className="stock-illustration-container">
-        <img
-          src="/content/developer_stock_illustration.png"
-          alt="Developer at computer desk illustration"
-          className="stock-illustration-img"
-        />
-      </div>
-    </motion.div>
-  )
-}
+const industrialExperiences = [
+  {
+    id: 'identifyou',
+    role: 'Digital Engineer Trainee – (Stipend)',
+    company: 'IdentifYou Technologies Private Ltd',
+    location: 'Madurai, Tamil Nadu',
+    period: 'Jun 2026 – Jul 2026',
+    logo: '/content/identifyou.png',
+    frontDescription:
+      'Engineered scalable full-stack software modules with React.js frontend, Express.js backend, and MySQL database integration with real-time business logic debugging.',
+    backTitle: 'Key Contributions & Engineering Scope',
+    bullets: [
+      'Worked on real–world software development tasks alongside the engineering team during the internship.',
+      'Developed a module with React.js (Frontend), Express.js (Backend), MySQL (Database).',
+      'Hands-on experience in real-time debugging business logic errors and optimizing data flows.',
+    ],
+    tech: [
+      { name: 'React.js', icon: SiReact },
+      { name: 'Express.js', icon: SiExpress },
+      { name: 'MySQL', icon: SiMysql },
+      { name: 'Full-Stack', icon: Layers3 },
+      { name: 'Debugging', icon: Bug },
+    ],
+    buttonText: 'Flip to Overview',
+  },
+  {
+    id: 'elysian',
+    role: 'Software Developer Intern',
+    company: 'Elysian Intelligence Business Solutions',
+    location: 'Madurai / Remote',
+    period: 'Jun 2025 – Jul 2025 (2 - weeks)',
+    logo: '/content/elysian.png',
+    frontDescription:
+      'Architected scalable full-stack web solutions and backend services, handled real-time client state management, and optimized UI performance.',
+    backTitle: 'Key Contributions & Architecture Scope',
+    bullets: [
+      'Engineered scalable full-stack web solutions and backend services for client projects.',
+      'Handled real-time state management, UI component optimizations, and database interactions.',
+      'Participated in core software architecture design and cross-functional feature development.',
+    ],
+    tech: [
+      { name: 'Full-Stack Engineering', icon: Layers3 },
+      { name: 'React', icon: SiReact },
+      { name: 'Express / Node', icon: SiNodedotjs },
+      { name: 'Database', icon: Database },
+      { name: 'Web Performance', icon: Zap },
+    ],
+    buttonText: 'Flip to Overview',
+  },
+]
 
 function ScrambleWord({ word, className, baseDelay = 150, duration = 2400 }) {
   const MORPH_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -2073,105 +2090,87 @@ function App() {
         <div className="section-heading">
           <h2>Industry <em>Experience</em></h2>
         </div>
-        <div className="experience-solo-container surface-card">
-          {/* IdentifYou Internship - Top (Left-aligned Logo, Top-Right Duration, Bottom-Right Illustration) */}
-          <div className="experience-entry-card experience-left-aligned">
-            <div className="experience-entry-header">
-              <div className="company-solo-logo-frame">
-                <img src="/content/identifyou.png" alt="IdentifYou Technologies Logo" className="company-solo-img" />
-              </div>
-              <div className="company-solo-meta">
-                <div className="company-title-line">
-                  <h3>Digital Engineer Trainee &ndash; (Stipend)</h3>
-                  <span className="exp-duration-badge">Jun 2026 &ndash; Jul 2026</span>
+        <div className="experience-flipping-grid">
+          {industrialExperiences.map((exp) => (
+            <FlippingCard
+              key={exp.id}
+              height={450}
+              frontContent={
+                <div className="flip-card-face-content">
+                  <div className="flip-exp-banner">
+                    <div className="flip-exp-logo-card">
+                      <img src={exp.logo} alt={`${exp.company} Logo`} className="flip-exp-logo-img" />
+                    </div>
+                    <span className="flip-exp-duration-badge">{exp.period}</span>
+                  </div>
+
+                  <div className="flip-exp-title-block">
+                    <span className="flip-exp-eyebrow">{exp.location}</span>
+                    <h3 className="flip-exp-role">{exp.role}</h3>
+                    <h4 className="flip-exp-company">{exp.company}</h4>
+                  </div>
+
+                  <p className="flip-exp-desc">{exp.frontDescription}</p>
+
+                  <div className="exp-tech-chips">
+                    {exp.tech.map(({ name, icon: Icon }) => (
+                      <span key={name}>
+                        <Icon aria-hidden="true" />
+                        <span>{name}</span>
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flip-exp-cue">
+                    <span>Hover or tap to flip card</span>
+                    <RotateCcw size={12} aria-hidden="true" />
+                  </div>
                 </div>
-                <h4 className="company-name">IdentifYou Technologies Private Ltd</h4>
-                <p className="company-location">Madurai, Tamil Nadu</p>
-              </div>
-            </div>
-            <div className="experience-entry-body">
-              <ul className="exp-bullets-list">
-                <li>Worked on real–world software development tasks alongside the engineering team during the internship.</li>
-                <li>Developed a module with React.js (Frontend), Express.js (Backend), MySQL (Database).</li>
-                <li>Had a good experience on real-time debugging business logic errors.</li>
-              </ul>
-              <div className="exp-tech-chips">
-                <span>
-                  <SiReact aria-hidden="true" />
-                  <span>React.js</span>
-                </span>
-                <span>
-                  <SiExpress aria-hidden="true" />
-                  <span>Express.js</span>
-                </span>
-                <span>
-                  <SiMysql aria-hidden="true" />
-                  <span>MySQL</span>
-                </span>
-                <span>
-                  <Layers3 aria-hidden="true" />
-                  <span>Full-Stack</span>
-                </span>
-                <span>
-                  <Bug aria-hidden="true" />
-                  <span>Debugging</span>
-                </span>
-              </div>
-            </div>
+              }
+              backContent={
+                <div className="flip-card-face-content">
+                  <div className="flip-exp-back-header">
+                    <span className="flip-exp-back-eyebrow">{exp.backTitle}</span>
+                    <h3 className="flip-exp-back-role">{exp.role}</h3>
+                    <p className="flip-exp-back-meta">
+                      {exp.company} &middot; <span>{exp.period}</span>
+                    </p>
+                  </div>
 
-            {/* Bottom Right Corner Illustration for IdentifYou */}
-            <IdentifYouIllustration />
-          </div>
+                  <ul className="flip-exp-bullets">
+                    {exp.bullets.map((bullet, idx) => (
+                      <li key={idx}>
+                        <span className="highlight-bullet" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-          <div className="experience-solo-divider" />
+                  <div className="exp-tech-chips">
+                    {exp.tech.map(({ name, icon: Icon }) => (
+                      <span key={name}>
+                        <Icon aria-hidden="true" />
+                        <span>{name}</span>
+                      </span>
+                    ))}
+                  </div>
 
-          {/* Elysian Internship - Bottom (Right-aligned Logo, Top-Left Duration, Bottom-Left Illustration) */}
-          <div className="experience-entry-card experience-right-aligned">
-            <div className="experience-entry-header flex-row-reverse">
-              <div className="company-solo-logo-frame">
-                <img src="/content/elysian.png" alt="Elysian Intelligence Logo" className="company-solo-img" />
-              </div>
-              <div className="company-solo-meta text-right">
-                <div className="company-title-line flex-row-reverse">
-                  <h3>Software Developer Intern</h3>
-                  <span className="exp-duration-badge">Jun 2025 &ndash; Jul 2025 (2 - weeks)</span>
+                  <div className="flip-exp-btn-wrap">
+                    <button
+                      type="button"
+                      className="gold-button flip-exp-action-btn"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                      }}
+                    >
+                      <span>{exp.buttonText}</span>
+                      <RotateCcw size={13} aria-hidden="true" />
+                    </button>
+                  </div>
                 </div>
-                <h4 className="company-name">Elysian Intelligence Business Solutions</h4>
-              </div>
-            </div>
-            <div className="experience-entry-body text-right-body">
-              <ul className="exp-bullets-list exp-bullets-right">
-                <li>Engineered scalable full-stack web solutions and backend services for client projects.</li>
-                <li>Handled real-time state management, UI component optimizations, and database interactions.</li>
-                <li>Participated in core software architecture design and cross-functional feature development.</li>
-              </ul>
-              <div className="exp-tech-chips flex-end">
-                <span>
-                  <Layers3 aria-hidden="true" />
-                  <span>Full-Stack Engineering</span>
-                </span>
-                <span>
-                  <SiReact aria-hidden="true" />
-                  <span>React</span>
-                </span>
-                <span>
-                  <SiNodedotjs aria-hidden="true" />
-                  <span>Express / Node</span>
-                </span>
-                <span>
-                  <Database aria-hidden="true" />
-                  <span>Database Engineering</span>
-                </span>
-                <span>
-                  <Zap aria-hidden="true" />
-                  <span>Web Performance</span>
-                </span>
-              </div>
-            </div>
-
-            {/* Bottom Left Corner Illustration for EIBS */}
-            <ElysianIllustration />
-          </div>
+              }
+            />
+          ))}
         </div>
       </motion.section>
 
