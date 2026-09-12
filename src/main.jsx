@@ -2111,14 +2111,6 @@ function App() {
               }
               backContent={
                 <div className="flip-card-face-content">
-                  <div className="flip-exp-back-header">
-                    <span className="flip-exp-back-eyebrow">{exp.backTitle}</span>
-                    <h3 className="flip-exp-back-role">{exp.role}</h3>
-                    <p className="flip-exp-back-meta">
-                      {exp.company} &middot; <span>{exp.period}</span>
-                    </p>
-                  </div>
-
                   <ul className="flip-exp-bullets">
                     {exp.bullets.map((bullet, idx) => (
                       <li key={idx}>
@@ -2128,7 +2120,7 @@ function App() {
                     ))}
                   </ul>
 
-                  <div className="exp-tech-chips">
+                  <div className="exp-tech-chips exp-tech-chips-centered">
                     {exp.tech.map(({ name, icon: Icon }) => (
                       <span key={name}>
                         <Icon aria-hidden="true" />
