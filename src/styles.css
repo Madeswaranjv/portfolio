@@ -1471,28 +1471,104 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   height: 50vh;
   max-height: 50vh;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   background: var(--surface-card, #0e111a);
   border: none;
   border-top: 1.5px solid var(--gold, #c8a45a);
   border-radius: 20px 20px 0 0;
   box-shadow: 0 -1.5rem 5rem rgba(0, 0, 0, 0.88), 0 -2px 14px rgba(200, 164, 90, 0.25);
-  padding: 1.25rem clamp(1.5rem, 5vw, 4.5rem) 2.25rem;
+  padding: 0.85rem clamp(1.5rem, 5vw, 4.5rem) 2.25rem;
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
   scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb) transparent;
+  scrollbar-color: rgba(200, 164, 90, 0.45) rgba(0, 0, 0, 0.2);
   margin: 0;
+  transition: height 0.38s cubic-bezier(0.16, 1, 0.3, 1), max-height 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-modal-dialog.is-expanded {
+  height: 88vh;
+  max-height: 88vh;
+}
+
+.project-modal-dialog::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-modal-dialog::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.project-modal-dialog::-webkit-scrollbar-thumb {
+  background: rgba(200, 164, 90, 0.45);
+  border-radius: 999px;
+}
+
+.project-modal-dialog::-webkit-scrollbar-thumb:hover {
+  background: var(--gold, #c8a45a);
+}
+
+/* Center drag/scale pill wrapper */
+.project-modal-drag-pill-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  margin: 0 auto;
+  padding: 0.3rem 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 999px;
+  background: transparent;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.project-modal-drag-pill-wrapper:hover {
+  background: rgba(200, 164, 90, 0.08);
 }
 
 .project-modal-drag-pill {
-  width: 48px;
-  height: 4.5px;
+  width: 52px;
+  height: 5px;
   border-radius: 999px;
   background: rgba(200, 164, 90, 0.45);
-  margin: 0 auto -0.3rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
+}
+
+.project-modal-drag-pill-wrapper:hover .project-modal-drag-pill {
+  background: var(--gold, #c8a45a);
+  width: 68px;
+  box-shadow: 0 0 10px rgba(200, 164, 90, 0.5);
+}
+
+.project-modal-drag-pill.is-expanded {
+  background: var(--gold, #c8a45a);
+}
+
+.project-modal-scale-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  opacity: 0.75;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.project-modal-drag-pill-wrapper:hover .project-modal-scale-hint {
+  opacity: 1;
+  transform: translateY(-1px);
 }
 
 .project-modal-header {
@@ -1504,6 +1580,7 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--surface-border);
   text-align: center;
+  flex-shrink: 0;
 }
 
 .project-modal-header-centered {
@@ -1513,6 +1590,43 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   justify-content: center;
   text-align: center;
   margin: 0 auto;
+  border-radius: 8px;
+  padding: 0.25rem 0.75rem;
+  transition: background 0.2s ease;
+}
+
+.project-modal-header-centered:hover {
+  background: rgba(200, 164, 90, 0.06);
+}
+
+.project-modal-header-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.project-modal-scale-btn {
+  background: rgba(200, 164, 90, 0.1);
+  border: 1px solid var(--surface-border);
+  color: var(--gold);
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.project-modal-scale-btn:hover {
+  background: rgba(200, 164, 90, 0.25);
+  border-color: var(--gold);
+  color: #ffffff;
+  transform: scale(1.06);
 }
 
 .project-modal-eyebrow {
@@ -1571,9 +1685,6 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
 }
 
 .project-modal-close {
-  position: absolute;
-  top: 0;
-  right: 0;
   background: rgba(200, 164, 90, 0.1);
   border: 1px solid var(--surface-border);
   color: var(--text-muted);
@@ -1604,6 +1715,7 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .project-modal-section {
@@ -1722,9 +1834,11 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   gap: 1.1rem;
   flex-wrap: wrap;
   padding-top: 1.25rem;
+  padding-bottom: 1.5rem;
   border-top: 1px solid var(--surface-border);
   width: 100%;
-  margin-top: auto;
+  margin-top: 1rem;
+  flex-shrink: 0;
 }
 
 .project-modal-action-btn {

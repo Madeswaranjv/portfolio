@@ -11,8 +11,10 @@ import {
   Briefcase,
   Bug,
   ChefHat,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   Cloud,
   Code2,
   Cpu,
@@ -30,6 +32,7 @@ import {
   Mail,
   Maximize2,
   Menu,
+  Minimize2,
   Moon,
   Network,
   Pause,
@@ -950,6 +953,10 @@ function renderTechIcon(tech) {
 }
 
 function ProjectDetailsModal({ project, onClose }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const dialogRef = useRef(null)
+  const dragStartY = useRef(null)
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose()
@@ -958,10 +965,47 @@ function ProjectDetailsModal({ project, onClose }) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [onClose])
 
+  // Isolate scroll so external Lenis listener on window doesn't capture or block mouse wheel/touch
+  useEffect(() => {
+    const el = dialogRef.current
+    if (!el) return
+    const handleScrollStop = (e) => {
+      e.stopPropagation()
+    }
+    el.addEventListener('wheel', handleScrollStop, { passive: true })
+    el.addEventListener('touchmove', handleScrollStop, { passive: true })
+    return () => {
+      el.removeEventListener('wheel', handleScrollStop)
+      el.removeEventListener('touchmove', handleScrollStop)
+    }
+  }, [])
+
   if (!project) return null
 
   const githubUrl = project.github || 'https://github.com/Madeswaranjv'
   const liveUrl = project.liveUrl || project.live || project.url || null
+
+  const toggleScale = (e) => {
+    if (e) e.stopPropagation()
+    setIsExpanded((prev) => !prev)
+  }
+
+  const handlePointerDown = (e) => {
+    dragStartY.current = e.clientY
+  }
+
+  const handlePointerUp = (e) => {
+    if (dragStartY.current === null) return
+    const diffY = e.clientY - dragStartY.current
+    // Dragged upwards -> scale up to expanded
+    if (diffY < -30) {
+      setIsExpanded(true)
+    } else if (diffY > 30) {
+      // Dragged downwards -> scale down
+      setIsExpanded(false)
+    }
+    dragStartY.current = null
+  }
 
   return (
     <AnimatePresence>
@@ -971,21 +1015,60 @@ function ProjectDetailsModal({ project, onClose }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
+        data-lenis-prevent="true"
       >
         <motion.div
-          className="project-modal-dialog surface-card project-modal-bottom-sheet"
+          ref={dialogRef}
+          className={`project-modal-dialog surface-card project-modal-bottom-sheet ${isExpanded ? 'is-expanded' : ''}`}
           initial={{ y: '100%' }}
           animate={{ y: 0 }}
           exit={{ y: '100%' }}
           transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
           onClick={(e) => e.stopPropagation()}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+          data-lenis-prevent="true"
         >
-          {/* Top handle pill for bottom sheet */}
-          <div className="project-modal-drag-pill" />
+          {/* Top handle pill for bottom sheet - Pressing at the center scales the window */}
+          <div
+            className="project-modal-drag-pill-wrapper"
+            onClick={toggleScale}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            role="button"
+            tabIndex={0}
+            aria-label={isExpanded ? 'Scale down sheet height' : 'Scale up sheet height'}
+            title={isExpanded ? 'Press at center to scale down (50% screen)' : 'Press at center to scale up (expanded)'}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                toggleScale(e)
+              }
+            }}
+          >
+            <span className={`project-modal-drag-pill ${isExpanded ? 'is-expanded' : ''}`} />
+            <span className="project-modal-scale-hint">
+              {isExpanded ? <ChevronDown size={13} aria-hidden="true" /> : <ChevronUp size={13} aria-hidden="true" />}
+              <span>{isExpanded ? 'Scale Down' : 'Scale Up'}</span>
+            </span>
+          </div>
 
           {/* Modal Header */}
           <div className="project-modal-header">
-            <div className="project-modal-header-centered">
+            <div
+              className="project-modal-header-centered"
+              onClick={toggleScale}
+              role="button"
+              tabIndex={0}
+              title="Press at center to scale window"
+              style={{ cursor: 'pointer' }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  toggleScale(e)
+                }
+              }}
+            >
               <span className="project-modal-eyebrow">{project.type}</span>
               <div className="project-modal-title-row">
                 <div className={`project-modal-mark ${project.className} ${project.logo ? 'has-custom-logo' : ''}`}>
@@ -998,15 +1081,26 @@ function ProjectDetailsModal({ project, onClose }) {
                 <h2>{project.name}</h2>
               </div>
             </div>
-            <button
-              type="button"
-              className="project-modal-close"
-              onClick={onClose}
-              aria-label="Close details"
-              title="Close (Esc)"
-            >
-              <X size={18} />
-            </button>
+            <div className="project-modal-header-actions">
+              <button
+                type="button"
+                className="project-modal-scale-btn"
+                onClick={toggleScale}
+                aria-label={isExpanded ? 'Scale down window' : 'Scale up window'}
+                title={isExpanded ? 'Scale Down (50vh)' : 'Scale Up (88vh)'}
+              >
+                {isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+              </button>
+              <button
+                type="button"
+                className="project-modal-close"
+                onClick={onClose}
+                aria-label="Close details"
+                title="Close (Esc)"
+              >
+                <X size={18} />
+              </button>
+            </div>
           </div>
 
           {/* Modal Body */}
@@ -1099,6 +1193,7 @@ function CertificateModal({ certificate, onClose }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
+        data-lenis-prevent="true"
       >
         <motion.div
           className="cert-modal-dialog surface-card"
@@ -1107,6 +1202,9 @@ function CertificateModal({ certificate, onClose }) {
           exit={{ scale: 0.94, opacity: 0, y: 12 }}
           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
           onClick={(e) => e.stopPropagation()}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+          data-lenis-prevent="true"
         >
           {/* Header */}
           <div className="cert-modal-header">
