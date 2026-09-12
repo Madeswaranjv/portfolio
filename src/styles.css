@@ -1011,6 +1011,74 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   color: #ffd700;
 }
 
+/* Light Mode Overrides for Industry Experience Flipping Cards */
+[data-theme="light"] .flipping-card-inner {
+  background: #ffffff;
+  border: 1.5px solid rgba(179, 137, 56, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .flipping-card-wrapper:hover .flipping-card-inner,
+[data-theme="light"] .flipping-card-inner.is-flipped {
+  border-color: var(--gold);
+  box-shadow: 0 16px 40px rgba(179, 137, 56, 0.22);
+}
+
+[data-theme="light"] .flipping-card-front,
+[data-theme="light"] .flipping-card-back {
+  background: #ffffff !important;
+}
+
+[data-theme="light"] .flip-exp-company-big {
+  color: var(--gold, #b38938);
+}
+
+[data-theme="light"] .flip-exp-role-title {
+  color: #1a1917;
+}
+
+[data-theme="light"] .flip-exp-location-text {
+  color: #656157;
+}
+
+[data-theme="light"] .flip-exp-date-white {
+  color: #1a1917 !important;
+  font-weight: 700;
+}
+
+[data-theme="light"] .flip-exp-logo-card-center {
+  background: #ffffff;
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .flip-exp-bullets li {
+  color: #1a1917;
+  font-weight: 500;
+}
+
+[data-theme="light"] .flip-exp-bullets .highlight-bullet {
+  background: var(--gold, #b38938);
+  box-shadow: 0 0 6px rgba(179, 137, 56, 0.6);
+}
+
+[data-theme="light"] .exp-tech-chips.exp-tech-chips-centered {
+  border-top: 1px solid rgba(179, 137, 56, 0.22);
+}
+
+[data-theme="light"] .exp-tech-chips > span {
+  color: #1a1917;
+  font-weight: 600;
+}
+
+[data-theme="light"] .exp-tech-chips > span svg {
+  color: var(--gold, #b38938);
+}
+
+[data-theme="light"] .exp-tech-chips > span:hover {
+  color: var(--gold, #b38938);
+}
+
 .experience-solo-divider {
   height: 1px;
   background: var(--surface-border);
