@@ -1556,7 +1556,6 @@ const industrialExperiences = [
       { name: 'Full-Stack', icon: Layers3 },
       { name: 'Debugging', icon: Bug },
     ],
-    buttonText: 'Flip to Overview',
   },
   {
     id: 'elysian',
@@ -1580,7 +1579,6 @@ const industrialExperiences = [
       { name: 'Database', icon: Database },
       { name: 'Web Performance', icon: Zap },
     ],
-    buttonText: 'Flip to Overview',
   },
 ]
 
@@ -2109,22 +2107,6 @@ function App() {
                     <p className="flip-exp-location-text">{exp.location}</p>
                     <span className="flip-exp-date-white">{exp.period}</span>
                   </div>
-
-                  {/* Centered Tech Chips */}
-                  <div className="exp-tech-chips exp-tech-chips-centered">
-                    {exp.tech.map(({ name, icon: Icon }) => (
-                      <span key={name}>
-                        <Icon aria-hidden="true" />
-                        <span>{name}</span>
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Centered Flip Prompt Cue */}
-                  <div className="flip-exp-cue-center">
-                    <span>Hover or tap to flip card</span>
-                    <RotateCcw size={12} aria-hidden="true" />
-                  </div>
                 </div>
               }
               backContent={
@@ -2153,19 +2135,6 @@ function App() {
                         <span>{name}</span>
                       </span>
                     ))}
-                  </div>
-
-                  <div className="flip-exp-btn-wrap">
-                    <button
-                      type="button"
-                      className="gold-button flip-exp-action-btn"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                      }}
-                    >
-                      <span>{exp.buttonText}</span>
-                      <RotateCcw size={13} aria-hidden="true" />
-                    </button>
                   </div>
                 </div>
               }
