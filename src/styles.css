@@ -497,60 +497,93 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
+  align-items: stretch;
 }
 
 @media (max-width: 880px) {
   .experience-flipping-grid {
     grid-template-columns: 1fr;
     max-width: 520px;
+    gap: 1.75rem;
   }
 }
 
 .flipping-card-wrapper {
   perspective: 1200px;
+  -webkit-perspective: 1200px;
   cursor: pointer;
   user-select: none;
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 460px;
+  box-sizing: border-box;
 }
 
 .flipping-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 460px;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
-  background: var(--surface-card, #121210);
-  border: 1px solid var(--surface-border, rgba(200, 164, 90, 0.2));
+  background: var(--surface-card, #141311);
+  border: 1.5px solid var(--surface-border, rgba(200, 164, 90, 0.25));
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
 }
 
 .flipping-card-wrapper:hover .flipping-card-inner,
 .flipping-card-inner.is-flipped {
   transform: rotateY(180deg);
-  border-color: rgba(200, 164, 90, 0.45);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(200, 164, 90, 0.18);
+  border-color: rgba(200, 164, 90, 0.55);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.75), 0 0 28px rgba(200, 164, 90, 0.22);
 }
 
 .flipping-card-front,
 .flipping-card-back {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
-  border-radius: inherit;
+  border-radius: 20px;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
-  background: linear-gradient(135deg, rgba(28, 28, 25, 0.96), rgba(16, 16, 15, 0.99));
+  -webkit-transform-style: preserve-3d;
+  background: linear-gradient(145deg, #1c1a16 0%, #121210 100%);
+  box-sizing: border-box;
+  padding: 1.65rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
 }
 
 .flipping-card-front {
   transform: rotateY(0deg);
+  z-index: 2;
 }
 
 .flipping-card-back {
   transform: rotateY(180deg);
+  z-index: 1;
+}
+
+.flipping-card-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  transform: translateZ(40px);
+  -webkit-transform: translateZ(40px);
 }
 
 .flip-card-face-content {
@@ -561,31 +594,35 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   width: 100%;
 }
 
-/* Front Card Content */
-.flip-exp-banner {
+/* Front Card Content - Centered Layout */
+.flip-card-front-centered {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  text-align: center;
+  height: 100%;
   width: 100%;
 }
 
-.flip-exp-logo-card {
-  width: 4.5rem;
-  height: 4.5rem;
+.flip-exp-logo-card-center {
+  width: 7.25rem;
+  height: 7.25rem;
   background: #ffffff;
-  padding: 0.45rem;
-  border-radius: 12px;
-  border: 1px solid var(--gold);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  padding: 0.75rem;
+  border-radius: 18px;
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   display: grid;
   place-items: center;
+  margin: 0.25rem auto 0;
   flex-shrink: 0;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
 }
 
-.flipping-card-wrapper:hover .flip-exp-logo-card {
-  transform: scale(1.05);
+.flipping-card-wrapper:hover .flip-exp-logo-card-center {
+  transform: scale(1.06);
+  box-shadow: 0 8px 24px rgba(200, 164, 90, 0.3);
 }
 
 .flip-exp-logo-img {
@@ -595,63 +632,72 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   display: block;
 }
 
-.flip-exp-duration-badge {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--gold);
-  background: rgba(200, 164, 90, 0.09);
-  border: 1px solid rgba(200, 164, 90, 0.25);
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
-.flip-exp-title-block {
+.flip-exp-center-block {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  margin-top: 0.6rem;
+  align-items: center;
+  text-align: center;
+  gap: 0.35rem;
+  margin: 0.5rem 0;
+  width: 100%;
 }
 
-.flip-exp-eyebrow {
+.flip-exp-company-big {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  font-weight: 800;
+  color: var(--gold);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.flip-exp-role-title {
+  margin: 0;
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  font-weight: 700;
+  color: var(--text-heading);
+  text-align: center;
+  line-height: 1.35;
+}
+
+.flip-exp-location-text {
+  margin: 0;
   font-family: 'DM Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  text-align: center;
 }
 
-.flip-exp-role {
-  margin: 0;
-  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
-  font-weight: 800;
-  color: var(--text-heading);
-  line-height: 1.3;
-}
-
-.flip-exp-company {
-  margin: 0;
-  font-size: 0.98rem;
+.flip-exp-date-white {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.92rem;
   font-weight: 700;
-  color: var(--gold);
+  letter-spacing: 0.04em;
+  color: #ffffff !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-top: 0.15rem;
+  text-align: center;
+  display: inline-block;
 }
 
-.flip-exp-desc {
-  margin: 0.4rem 0 0.8rem;
-  font-size: 0.86rem;
-  line-height: 1.65;
-  color: var(--text-main);
-  opacity: 0.92;
+.exp-tech-chips.exp-tech-chips-centered {
+  justify-content: center;
+  margin: 0 auto;
 }
 
-.flip-exp-cue {
+.flip-exp-cue-center {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 0.5rem;
   width: 100%;
-  padding-top: 0.7rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--surface-border);
   font-family: 'DM Mono', monospace;
   font-size: 0.7rem;
@@ -661,9 +707,10 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   letter-spacing: 0.05em;
   opacity: 0.85;
   transition: opacity 0.2s ease;
+  text-align: center;
 }
 
-.flipping-card-wrapper:hover .flip-exp-cue {
+.flipping-card-wrapper:hover .flip-exp-cue-center {
   opacity: 1;
 }
 

@@ -2096,23 +2096,22 @@ function App() {
               key={exp.id}
               height={450}
               frontContent={
-                <div className="flip-card-face-content">
-                  <div className="flip-exp-banner">
-                    <div className="flip-exp-logo-card">
-                      <img src={exp.logo} alt={`${exp.company} Logo`} className="flip-exp-logo-img" />
-                    </div>
-                    <span className="flip-exp-duration-badge">{exp.period}</span>
+                <div className="flip-card-face-content flip-card-front-centered">
+                  {/* Centered Bigger Company Logo */}
+                  <div className="flip-exp-logo-card-center">
+                    <img src={exp.logo} alt={`${exp.company} Logo`} className="flip-exp-logo-img" />
                   </div>
 
-                  <div className="flip-exp-title-block">
-                    <span className="flip-exp-eyebrow">{exp.location}</span>
-                    <h3 className="flip-exp-role">{exp.role}</h3>
-                    <h4 className="flip-exp-company">{exp.company}</h4>
+                  {/* Centered Bigger Company Name, Role, Location, and Plain White Duration Date */}
+                  <div className="flip-exp-center-block">
+                    <h3 className="flip-exp-company-big">{exp.company}</h3>
+                    <h4 className="flip-exp-role-title">{exp.role}</h4>
+                    <p className="flip-exp-location-text">{exp.location}</p>
+                    <span className="flip-exp-date-white">{exp.period}</span>
                   </div>
 
-                  <p className="flip-exp-desc">{exp.frontDescription}</p>
-
-                  <div className="exp-tech-chips">
+                  {/* Centered Tech Chips */}
+                  <div className="exp-tech-chips exp-tech-chips-centered">
                     {exp.tech.map(({ name, icon: Icon }) => (
                       <span key={name}>
                         <Icon aria-hidden="true" />
@@ -2121,7 +2120,8 @@ function App() {
                     ))}
                   </div>
 
-                  <div className="flip-exp-cue">
+                  {/* Centered Flip Prompt Cue */}
+                  <div className="flip-exp-cue-center">
                     <span>Hover or tap to flip card</span>
                     <RotateCcw size={12} aria-hidden="true" />
                   </div>

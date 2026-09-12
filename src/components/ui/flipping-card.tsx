@@ -13,20 +13,22 @@ export function FlippingCard({
   className,
   frontContent,
   backContent,
-  height = 430,
+  height = 460,
   width = "100%",
 }: FlippingCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const cardHeight = typeof height === "number" ? `${height}px` : height;
+  const cardWidth = typeof width === "number" ? `${width}px` : width;
+
   return (
     <div
-      className="group/flipping-card [perspective:1200px] flipping-card-wrapper w-full"
-      style={
-        {
-          "--height": typeof height === "number" ? `${height}px` : height,
-          "--width": typeof width === "number" ? `${width}px` : width,
-        } as React.CSSProperties
-      }
+      className={cn("flipping-card-wrapper", className)}
+      style={{
+        height: cardHeight,
+        minHeight: cardHeight,
+        width: cardWidth,
+      }}
       onClick={() => setIsFlipped((prev) => !prev)}
       role="button"
       tabIndex={0}
@@ -39,21 +41,19 @@ export function FlippingCard({
     >
       <div
         className={cn(
-          "relative rounded-2xl border border-neutral-200 bg-white shadow-xl transition-all duration-700 [transform-style:preserve-3d] group-hover/flipping-card:[transform:rotateY(180deg)] dark:border-neutral-800 dark:bg-neutral-950 flipping-card-inner",
-          "h-[var(--height)] w-[var(--width)]",
-          isFlipped ? "is-flipped [transform:rotateY(180deg)]" : "",
-          className
+          "flipping-card-inner",
+          isFlipped ? "is-flipped" : ""
         )}
       >
         {/* Front Face */}
-        <div className="absolute inset-0 h-full w-full rounded-[inherit] bg-white text-neutral-950 [transform-style:preserve-3d] [backface-visibility:hidden] [transform:rotateY(0deg)] dark:bg-zinc-950 dark:text-neutral-50 flipping-card-front">
-          <div className="[transform:translateZ(50px)_scale(.96)] h-full w-full flex flex-col justify-between box-border p-5">
+        <div className="flipping-card-front">
+          <div className="flipping-card-content">
             {frontContent}
           </div>
         </div>
         {/* Back Face */}
-        <div className="absolute inset-0 h-full w-full rounded-[inherit] bg-white text-neutral-950 [transform-style:preserve-3d] [backface-visibility:hidden] [transform:rotateY(180deg)] dark:bg-zinc-950 dark:text-neutral-50 flipping-card-back">
-          <div className="[transform:translateZ(50px)_scale(.96)] h-full w-full flex flex-col justify-between box-border p-5">
+        <div className="flipping-card-back">
+          <div className="flipping-card-content">
             {backContent}
           </div>
         </div>
