@@ -79,6 +79,7 @@ import MagnificationDock from './components/MagnificationDock'
 import { FlipLink } from '@/components/ui/flip-links'
 import { ExpandingCards } from '@/components/ui/expanding-cards'
 import { FlippingCard } from '@/components/ui/flipping-card'
+import { FlowButton } from '@/components/ui/flow-button'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import './styles.css'
@@ -1146,27 +1147,28 @@ function ProjectDetailsModal({ project, onClose }) {
           {/* Modal Footer Actions */}
           <div className="project-modal-footer">
             {liveUrl && (
-              <a
+              <FlowButton
                 href={liveUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="gold-button project-modal-action-btn"
+                variant="gold"
+                size="compact"
                 title="Visit Live Deployment"
               >
-                <span>Visit Live Website</span>
-                <ArrowUpRight size={15} />
-              </a>
+                Visit Live Website
+              </FlowButton>
             )}
-            <a
+            <FlowButton
               href={githubUrl}
               target="_blank"
               rel="noreferrer"
-              className="outline-button project-modal-action-btn"
+              variant="outline"
+              size="compact"
               title="View Repository on GitHub"
             >
               <FaGithub size={15} />
               <span>View Source Code</span>
-            </a>
+            </FlowButton>
           </div>
         </motion.div>
       </motion.div>
@@ -1279,23 +1281,24 @@ function CertificateModal({ certificate, onClose }) {
             <div className="cert-modal-footer-actions">
               {encodedUrl && (
                 <>
-                  <a
+                  <FlowButton
                     href={encodedUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="gold-button cert-modal-btn"
+                    variant="gold"
+                    size="compact"
                   >
-                    <span>Open Live Certificate</span>
-                    <ArrowUpRight size={14} />
-                  </a>
-                  <a
+                    Open Live Certificate
+                  </FlowButton>
+                  <FlowButton
                     href={encodedUrl}
                     download
-                    className="outline-button cert-modal-btn"
+                    variant="outline"
+                    size="compact"
+                    icon={FileDown}
                   >
-                    <FileDown size={14} />
-                    <span>Download PDF</span>
-                  </a>
+                    Download PDF
+                  </FlowButton>
                 </>
               )}
             </div>
@@ -1899,7 +1902,9 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 1.55, ease: [0.16, 1, 0.3, 1] }}
           >
-            <a className="gold-button" href="#contact">Let&apos;s Talk <ArrowUpRight aria-hidden="true" /></a>
+            <FlowButton href="#contact" variant="gold">
+              Let&apos;s Talk
+            </FlowButton>
           </motion.div>
 
           <motion.div
