@@ -80,6 +80,7 @@ import { FlipLink } from '@/components/ui/flip-links'
 import { ExpandingCards } from '@/components/ui/expanding-cards'
 import { FlippingCard } from '@/components/ui/flipping-card'
 import { FlowButton } from '@/components/ui/flow-button'
+import SocialCards from '@/components/ui/card-fan-carousel'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import './styles.css'
@@ -137,6 +138,7 @@ const certificates = [
     icon: Cloud,
     className: 'aws-cert',
     file: '/certificates/aws-cloud practioner.pdf',
+    imgUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop',
   },
   {
     name: 'AWS Cloud Foundations',
@@ -144,6 +146,7 @@ const certificates = [
     date: '2026',
     icon: Server,
     className: 'cloud-cert',
+    imgUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop',
   },
   {
     name: 'AI Systems & LLM Agents',
@@ -151,6 +154,7 @@ const certificates = [
     date: '2026',
     icon: Bot,
     className: 'ai-cert',
+    imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop',
   },
   {
     name: 'Full-Stack Web Engineering',
@@ -158,6 +162,7 @@ const certificates = [
     date: '2025',
     icon: Layers3,
     className: 'fullstack-cert',
+    imgUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop',
   },
   {
     name: 'Continuous Learner in AI',
@@ -165,6 +170,23 @@ const certificates = [
     date: 'Ongoing',
     icon: Award,
     className: 'learning-cert',
+    imgUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop',
+  },
+  {
+    name: 'Distributed Systems & Cloud Architecture',
+    issuer: 'Cloud Native Systems',
+    date: '2025',
+    icon: Server,
+    className: 'cloud-cert',
+    imgUrl: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=800&auto=format&fit=crop',
+  },
+  {
+    name: 'Advanced React & Frontend Architecture',
+    issuer: 'Modern Engineering Lab',
+    date: '2025',
+    icon: Code2,
+    className: 'fullstack-cert',
+    imgUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=800&auto=format&fit=crop',
   },
 ]
 
@@ -2147,50 +2169,22 @@ function App() {
           </div>
           <p className="section-note">Verified industry credentials, cloud certifications, and technical courses.</p>
         </div>
-        <motion.div
-          className="certificates-grid"
-          initial="stacked"
-          whileInView="unstacked"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          {certificates.map((cert, index) => {
-            const { name, issuer, date, icon: Icon, className, file } = cert
-            const hasLiveCert = Boolean(file)
-            return (
-              <motion.div
-                className={`cert-card ${hasLiveCert ? 'has-live-cert' : ''}`}
-                key={name}
-                custom={index}
-                variants={certCardStackVariants}
-                onClick={() => setActiveCertificate(cert)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    setActiveCertificate(cert)
-                  }
-                }}
-                title={hasLiveCert ? `Click to view live ${name} certificate` : `Click to view ${name} details`}
-              >
-                <div className={`cert-icon ${className}`}>
-                  <Icon aria-hidden="true" />
-                </div>
-                <div>
-                  <span className="cert-badge">{date}</span>
-                  <h3>{name}</h3>
-                  <p className="cert-issuer">{issuer}</p>
-                  {hasLiveCert && (
-                    <div className="cert-live-indicator">
-                      <span>Live Certificate</span>
-                      <ArrowUpRight size={11} />
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            )
-          })}
-        </motion.div>
+        <SocialCards
+          cards={certificates.map((cert) => ({
+            title: cert.name,
+            issuer: cert.issuer,
+            date: cert.date,
+            imgUrl: cert.imgUrl,
+            alt: cert.name,
+            hasLiveCert: Boolean(cert.file),
+            onClick: () => setActiveCertificate(cert),
+          }))}
+          onCardClick={(card, index) => {
+            if (certificates[index]) {
+              setActiveCertificate(certificates[index])
+            }
+          }}
+        />
       </motion.section>
 
 
