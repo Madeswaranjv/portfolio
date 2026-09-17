@@ -3041,9 +3041,10 @@ main { overflow: hidden; background: var(--bg-radial), var(--bg-main); transitio
   box-shadow: none;
 }
 
-[data-theme="light"] .flip-link-card-row:hover .flip-link-arrow-btn {
+[data-theme="light"] .flip-link-card-row:hover .flip-link-arrow-btn,
+[data-theme="light"] .flip-link-arrow-btn:hover {
   background: transparent;
-  color: var(--gold-active);
+  color: #000000 !important;
 }
 
 .flip-link-card-row:hover .flip-link-arrow-btn svg {
