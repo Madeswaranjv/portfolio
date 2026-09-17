@@ -52,7 +52,7 @@ import {
   X,
   Zap,
 } from 'lucide-react'
-import { FaAws, FaCss3Alt, FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6'
+import { FaAws, FaCss3Alt, FaGithub, FaGoogle, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6'
 import {
   SiCplusplus,
   SiExpress,
@@ -138,7 +138,7 @@ const certificates = [
     icon: Cloud,
     className: 'aws-cert',
     file: '/certificates/aws-cloud practioner.pdf',
-    imgUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop',
+    imgUrl: '/certificates/aws.png',
   },
   {
     name: 'AWS Cloud Foundations',
@@ -149,20 +149,24 @@ const certificates = [
     imgUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop',
   },
   {
-    name: 'AI Systems & LLM Agents',
-    issuer: 'Deep Learning & MCP',
+    name: 'Problem Solving (Basic)',
+    issuer: 'HackerRank',
     date: '2026',
-    icon: Bot,
+    icon: Code2,
     className: 'ai-cert',
-    imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop',
+    file: '/certificates/problem_solving_basic certificate.pdf',
+    liveUrl: 'https://www.hackerrank.com/certificates/iframe/55e8348f78e2',
+    imgUrl: '/certificates/hackerrank-problemsolving.png',
   },
   {
-    name: 'Full-Stack Web Engineering',
-    issuer: 'Modern Web Stack',
-    date: '2025',
-    icon: Layers3,
+    name: 'REST API (Intermediate)',
+    issuer: 'HackerRank',
+    date: '2026',
+    icon: Globe,
     className: 'fullstack-cert',
-    imgUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop',
+    file: '/certificates/rest_api_intermediate certificate.pdf',
+    liveUrl: 'https://www.hackerrank.com/certificates/iframe/5033819dc312',
+    imgUrl: '/certificates/hackerrank-restapi.png',
   },
   {
     name: 'Continuous Learner in AI',
@@ -1210,6 +1214,7 @@ function CertificateModal({ certificate, onClose }) {
   if (!certificate) return null
 
   const encodedUrl = certificate.file ? encodeURI(certificate.file) : null
+  const liveUrl = certificate.liveUrl || null
 
   return (
     <AnimatePresence>
@@ -1243,28 +1248,28 @@ function CertificateModal({ certificate, onClose }) {
             </div>
 
             <div className="cert-modal-header-actions">
+              {liveUrl && (
+                <a
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="cert-icon-btn"
+                  title="Verify certificate on HackerRank"
+                  aria-label="Verify on HackerRank"
+                >
+                  <ArrowUpRight size={17} />
+                </a>
+              )}
               {encodedUrl && (
-                <>
-                  <a
-                    href={encodedUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="cert-icon-btn"
-                    title="Open live certificate in new tab"
-                    aria-label="Open in new tab"
-                  >
-                    <ArrowUpRight size={17} />
-                  </a>
-                  <a
-                    href={encodedUrl}
-                    download
-                    className="cert-icon-btn"
-                    title="Download certificate PDF"
-                    aria-label="Download PDF"
-                  >
-                    <FileDown size={17} />
-                  </a>
-                </>
+                <a
+                  href={encodedUrl}
+                  download
+                  className="cert-icon-btn"
+                  title="Download certificate PDF"
+                  aria-label="Download PDF"
+                >
+                  <FileDown size={17} />
+                </a>
               )}
               <button
                 type="button"
@@ -1278,9 +1283,17 @@ function CertificateModal({ certificate, onClose }) {
             </div>
           </div>
 
-          {/* Body / PDF Viewer */}
+          {/* Body / Live Iframe or PDF Viewer */}
           <div className="cert-modal-body">
-            {encodedUrl ? (
+            {liveUrl ? (
+              <div className="cert-preview-frame">
+                <iframe
+                  src={liveUrl}
+                  title={`${certificate.name} – Live Verification`}
+                  className="cert-iframe"
+                />
+              </div>
+            ) : encodedUrl ? (
               <div className="cert-preview-frame">
                 <iframe
                   src={`${encodedUrl}#toolbar=1&navpanes=0`}
@@ -1301,27 +1314,27 @@ function CertificateModal({ certificate, onClose }) {
               Issued by {certificate.issuer}
             </span>
             <div className="cert-modal-footer-actions">
+              {liveUrl && (
+                <FlowButton
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  variant="gold"
+                  size="compact"
+                >
+                  Verify Certificate
+                </FlowButton>
+              )}
               {encodedUrl && (
-                <>
-                  <FlowButton
-                    href={encodedUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    variant="gold"
-                    size="compact"
-                  >
-                    Open Live Certificate
-                  </FlowButton>
-                  <FlowButton
-                    href={encodedUrl}
-                    download
-                    variant="outline"
-                    size="compact"
-                    icon={FileDown}
-                  >
-                    Download PDF
-                  </FlowButton>
-                </>
+                <FlowButton
+                  href={encodedUrl}
+                  download
+                  variant="outline"
+                  size="compact"
+                  icon={FileDown}
+                >
+                  Download PDF
+                </FlowButton>
               )}
             </div>
           </div>
@@ -2011,7 +2024,7 @@ function App() {
         <div className="section-heading">
           <h2>About <em>Me</em></h2>
         </div>
-        <article className="about-card surface-card">
+        <article className="about-card">
           <AboutPassageReader text={aboutPassageText} />
         </article>
       </motion.section>
@@ -2021,7 +2034,7 @@ function App() {
         <div className="section-heading">
           <h2>Academic <em>Education</em></h2>
         </div>
-        <article className="education-solo-card surface-card">
+        <article className="education-solo-card">
           <div className="education-solo-body">
             <div className="education-solo-info">
               <div className="education-degree-header">
@@ -2176,7 +2189,7 @@ function App() {
             date: cert.date,
             imgUrl: cert.imgUrl,
             alt: cert.name,
-            hasLiveCert: Boolean(cert.file),
+            isDocument: Boolean(cert.file),
             onClick: () => setActiveCertificate(cert),
           }))}
           onCardClick={(card, index) => {
@@ -2192,7 +2205,7 @@ function App() {
         <div className="section-heading">
           <h2>My <em>Projects</em></h2>
         </div>
-        <div className="project-group surface-card">
+        <div className="project-group">
           <div className="project-group-heading">
             <div><p className="eyebrow">01</p><h3>Development Projects</h3></div>
             <p>Systems, products, and experiments built to solve tangible problems.</p>
@@ -2216,7 +2229,7 @@ function App() {
             ))}
           </motion.div>
         </div>
-        <div className="project-group surface-card research-group">
+        <div className="project-group research-group">
           <div className="project-group-heading">
             <div><p className="eyebrow">02</p><h3>Other Projects / Research</h3></div>
             <p>Exploring reliable developer tooling and applied machine learning.</p>
@@ -2271,7 +2284,7 @@ function App() {
             <p className="contact-description">
               Have an idea, project, or an opportunity you&apos;d like to discuss? Reach out directly via email or connect with me across my social profiles.
             </p>
-            <a className="email-link" href={`mailto:${email}`}><Mail aria-hidden="true" /> {email}</a>
+            <a className="email-link" href={`mailto:${email}`}><FaGoogle aria-hidden="true" className="email-google-icon" /> {email}</a>
           </div>
 
           <div className="contact-social-showcase">
@@ -2282,9 +2295,6 @@ function App() {
                   className="flip-link-card-row"
                 >
                   <div className="flip-link-header">
-                    <div className="flip-link-icon-wrap" aria-hidden="true">
-                      <Icon />
-                    </div>
                     <span className="flip-link-handle">{handle}</span>
                   </div>
                   <div className="flip-link-action-row">
@@ -2298,7 +2308,7 @@ function App() {
                       className="flip-link-arrow-btn"
                       aria-label={`Open ${label} profile`}
                     >
-                      <ArrowUpRight aria-hidden="true" />
+                      <Icon aria-hidden="true" />
                     </a>
                   </div>
                 </div>

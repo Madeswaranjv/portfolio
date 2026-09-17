@@ -14,6 +14,7 @@ export interface CardItem {
   badge?: string;
   icon?: React.ReactNode;
   hasLiveCert?: boolean;
+  isDocument?: boolean;
   className?: string;
   onClick?: () => void;
 }
@@ -275,12 +276,12 @@ export default function SocialCards({ cards, className = "", onCardClick }: Soci
           {cards.map((card, index) => {
             const hasDetails = Boolean(card.title || card.issuer || card.date);
             const image = (
-              <div className="fan-card-inner relative w-full h-full overflow-hidden rounded-2xl">
+              <div className={`fan-card-inner relative w-full h-full overflow-hidden rounded-2xl ${card.isDocument ? 'bg-[#f5f3ef]' : ''}`}>
                 <img
                   src={card.imgUrl}
                   loading="lazy"
                   alt={card.alt || card.title || `Card ${index}`}
-                  className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-700 hover:scale-105"
+                  className={`absolute inset-0 w-full h-full z-10 transition-transform duration-700 hover:scale-105 ${card.isDocument ? 'object-contain p-2' : 'object-cover'}`}
                 />
                 {hasDetails && (
                   <>
